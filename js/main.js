@@ -272,6 +272,7 @@
     card.innerHTML =
       buildCover(project, number) +
       '<div class="project-body">' +
+      (project.featured ? '<span class="card-badge mono">Свежая работа</span>' : "") +
       '<h3 class="project-title">' + escapeHtml(project.title) + "</h3>" +
       '<p class="project-desc">' + escapeHtml(project.description) + "</p>" +
       '<ul class="project-tags">' + tags + "</ul>" +

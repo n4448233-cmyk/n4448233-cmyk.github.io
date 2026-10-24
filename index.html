@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Портфолио — Ваше имя</title>
-  <meta name="description" content="Портфолио: проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
+  <title>Sexsowa — портфолио</title>
+  <meta name="description" content="Портфолио Sexsowa: проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Open Graph: так ссылка красиво выглядит, когда кидаешь её в телеграм -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Портфолио — Ваше имя">
+  <meta property="og:title" content="Sexsowa — портфолио">
   <meta property="og:description" content="Проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
   <meta property="og:locale" content="ru_RU">
 
@@ -36,27 +36,42 @@
 
   <main>
 
-    <!-- ===== Приветствие =====
-         Текст ниже — заглушка. Замени на свой: кто ты и что делаешь,
-         одним-двумя предложениями, своими словами. -->
+    <!-- ===== Приветствие ===== -->
     <section class="hero">
-      <div class="container">
-        <p class="kicker mono">Портфолио · 2026</p>
-        <h1 class="hero-title">
-          Собираю сайты и инструменты,<br>
-          которые <em>просто работают</em>.
-        </h1>
-        <p class="hero-text">
-          Привет! Я — <span data-bind="name">Ваше имя</span>. Здесь лежат проекты,
-          которые я сделал: от маленьких утилит для себя до полноценных сайтов.
-          Каждый — с историей о том, зачем он вообще появился.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-solid" href="#projects">Смотреть проекты</a>
-          <a class="btn btn-ghost" href="#contacts">Связаться</a>
+      <!-- Фото: "Macro laptop coding" с Wikimedia Commons (оригинал Unsplash) -->
+      <div class="hero-bg" aria-hidden="true">
+        <img src="img/hero.jpg" alt="">
+      </div>
+      <div class="container hero-grid">
+        <div class="hero-main">
+          <p class="kicker mono">Портфолио · 2026</p>
+          <h1 class="hero-title">
+            Собираю сайты и инструменты,<br>
+            которые <em>просто работают</em>.
+          </h1>
+          <p class="hero-text">
+            Привет! Я — <span data-bind="name">Sexsowa</span>. Здесь лежат проекты,
+            которые я сделал: от маленьких утилит для себя до полноценных сайтов.
+            Каждый — с историей о том, зачем он вообще появился.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-solid" href="#projects">Смотреть проекты</a>
+            <a class="btn btn-ghost" href="#contacts">Связаться</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="img/sig.gif" alt="Анимированная сигнатура Sexsowa" width="480" height="574">
         </div>
       </div>
     </section>
+
+    <!-- ===== Бегущая строка ===== -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track mono">
+        <span><em>открыт для заказов</em> · HTML · CSS · JavaScript · Python · Git · Figma · вёрстка · адаптив · </span>
+        <span><em>открыт для заказов</em> · HTML · CSS · JavaScript · Python · Git · Figma · вёрстка · адаптив · </span>
+      </div>
+    </div>
 
     <!-- ===== Проекты =====
          Сами проекты лежат в js/data.js — добавляй и меняй их там. -->
@@ -95,15 +110,22 @@
               новое.
             </p>
           </div>
-          <div class="about-stack">
-            <h3 class="mono">Инструменты</h3>
-            <ul class="stack-list mono">
-              <li>HTML / CSS</li>
-              <li>JavaScript</li>
-              <li>Git</li>
-              <li>Python</li>
-              <li>Figma</li>
-            </ul>
+          <div class="about-side">
+            <!-- Фото: "Coffee cup next to laptop..." с Wikimedia Commons -->
+            <figure class="about-photo">
+              <img src="img/about.jpg" alt="Ноутбук и чашка кофе на деревянном столе — рабочее место">
+              <figcaption class="mono">рабочее место · кофе прилагается</figcaption>
+            </figure>
+            <div class="about-stack">
+              <h3 class="mono">Инструменты</h3>
+              <ul class="stack-list mono">
+                <li>HTML / CSS</li>
+                <li>JavaScript</li>
+                <li>Git</li>
+                <li>Python</li>
+                <li>Figma</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
