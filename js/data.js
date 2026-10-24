@@ -39,6 +39,20 @@ const CONTACTS = {
 
 const PROJECTS = [
   {
+    title: "«Углёк» — сайт кофейной обжарки",
+    description:
+      "Лендинг для локальной обжарки: каталог с фильтром по степени обжарки, переключение веса, корзина-счётчик и подписка. Иллюстрации пакетов нарисованы кодом (SVG), без единой картинки. Адаптив от телефона до десктопа.",
+    tags: ["HTML", "CSS", "JavaScript", "SVG", "адаптив"],
+    images: [
+      "img/projects/uglek-1.png",
+      "img/projects/uglek-2.png",
+      "img/projects/uglek-3.png",
+    ],
+    demo: "projects/uglek/index.html",
+    source: "",
+    featured: true,
+  },
+  {
     title: "Сайт-визитка для мастерской",
     description:
       "Одностраничный сайт для столярной мастерской: каталог работ, форма заявки, адаптив под телефон. Сделал быстро и без конструкторов — заказчик доволен.",
@@ -50,7 +64,6 @@ const PROJECTS = [
     ],
     demo: "https://example.com",
     source: "https://github.com/username/project",
-    featured: true,
   },
   {
     title: "Трекер привычек",

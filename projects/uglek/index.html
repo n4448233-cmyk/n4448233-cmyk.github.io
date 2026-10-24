@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Углёк — кофейная обжарка</title>
+  <meta name="description" content="Углёк — маленькая кофейная обжарка. Жарим по четвергам, отправляем в тот же день: зерно не старше 72 часов.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Углёк — кофейная обжарка">
+  <meta property="og:description" content="Кофе свежей обжарки: жарим по четвергам, привозим не старше 72 часов.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="logo" href="#top">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <circle cx="13" cy="13" r="12" fill="var(--rust)"/>
+          <path d="M7.5 10.5c1.8 2.2 1.8 4.6.6 6.9 2.6.9 6-.4 7.4-2.6-2.8-.6-4.9-2-6.3-4.6-1 .1-1.4.2-1.7.3z" fill="var(--paper)"/>
+          <ellipse cx="16.2" cy="9.2" rx="3.1" ry="2.2" transform="rotate(28 16.2 9.2)" fill="var(--ink)"/>
+          <path d="M14.3 7.7c.9 1.2 1.8 1.9 3.3 2.3" stroke="var(--paper)" stroke-width="1"/>
+        </svg>
+        <span>Углёк</span>
+      </a>
+
+      <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+        <a href="#catalog">Каталог</a>
+        <a href="#methods">Как заваривать</a>
+        <a href="#sub">Подписка</a>
+        <a href="#about">О нас</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="cart-btn" type="button" id="cart-btn" aria-label="Корзина">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 7h12l-1.2 12.2a1.5 1.5 0 0 1-1.5 1.3H8.7a1.5 1.5 0 0 1-1.5-1.3L6 7z"
+                  stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M9 9V6a3 3 0 0 1 6 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="cart-count" id="cart-count" hidden>0</span>
+        </button>
+        <button class="burger" type="button" id="burger" aria-label="Меню" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Приветствие ===== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="kicker mono">Локальная обжарка · с 2023 года</p>
+          <h1 class="hero-title">Кофе, обжаренный <em>в&nbsp;четверг</em></h1>
+          <p class="hero-text">
+            «Углёк» — маленькая обжарка в центре города. Жарим маленькими
+            партиями по четвергам и отправляем в тот же день: к тебе приезжает
+            пакет не старше 72 часов.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-solid" href="#catalog">Выбрать кофе</a>
+            <a class="btn btn-ghost" href="#about">Как мы жарим</a>
+          </div>
+          <p class="hero-note mono">100% арабика · зерно и помол под любую заварку</p>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <svg class="bag-svg" viewBox="0 0 340 420" role="img">
+            <circle class="sun" cx="205" cy="185" r="150"/>
+            <!-- пакет -->
+            <g class="bag">
+              <path d="M95 96h150l14 34v238a16 16 0 0 1-16 16H97a16 16 0 0 1-16-16V130l14-34z" fill="#f7f2e7" stroke="#231409" stroke-width="3"/>
+              <!-- зип-замок -->
+              <rect x="86" y="112" width="168" height="20" rx="4" fill="#231409"/>
+              <path d="M92 122h156" stroke="#f7f2e7" stroke-width="2" stroke-dasharray="3 5"/>
+              <!-- лента дегазационного клапана -->
+              <circle cx="216" cy="158" r="9" fill="none" stroke="#231409" stroke-width="2"/>
+              <!-- этикетка -->
+              <rect x="112" y="196" width="116" height="132" fill="#231409"/>
+              <text x="170" y="230" text-anchor="middle" fill="#f7f2e7" font-size="13" letter-spacing="3">УГЛЁК</text>
+              <line x1="132" y1="242" x2="208" y2="242" stroke="#bf4524" stroke-width="2"/>
+              <text x="170" y="268" text-anchor="middle" fill="#f7f2e7" font-size="11" opacity=".85">ОБЖАРКА № 214</text>
+              <text x="170" y="288" text-anchor="middle" fill="#f7f2e7" font-size="11" opacity=".85">ЧЕТВЕРГ · 12 КГ</text>
+              <text x="170" y="312" text-anchor="middle" fill="#bf4524" font-size="12">ЭФИОПИЯ</text>
+            </g>
+            <!-- зёрна у подножия -->
+            <g class="beans" stroke="#231409" stroke-width="2">
+              <ellipse cx="104" cy="398" rx="17" ry="12" transform="rotate(-18 104 398)" fill="#a4643a"/>
+              <path d="M90 402c8-6 17-8 27-6" fill="none"/>
+              <ellipse cx="196" cy="404" rx="16" ry="11" transform="rotate(12 196 404)" fill="#8a4a2b"/>
+              <path d="M182 403c8-5 17-6 27-3" fill="none"/>
+              <ellipse cx="146" cy="412" rx="14" ry="10" transform="rotate(-30 146 412)" fill="#6f3d24"/>
+              <path d="M134 418c7-6 15-8 24-7" fill="none"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== бегущая строка ===== -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track mono">
+        <span>Свежая обжарка · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · четверг — день ростера · </span>
+        <span>Свежая обжарка · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · четверг — день ростера · </span>
+      </div>
+    </div>
+
+    <!-- ===== Каталог ===== -->
+    <section class="section" id="catalog">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="kicker mono">Каталог</p>
+            <h2>Зерно этого сезона</h2>
+          </div>
+          <div class="filters" role="group" aria-label="Фильтр по обжарке">
+            <button class="chip is-active" type="button" data-roast="all">Все</button>
+            <button class="chip" type="button" data-roast="light">Светлая</button>
+            <button class="chip" type="button" data-roast="medium">Средняя</button>
+            <button class="chip" type="button" data-roast="dark">Тёмная</button>
+          </div>
+        </div>
+        <div class="catalog-grid" id="catalog-grid">
+          <!-- карточки рендерятся из main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Методы заваривания ===== -->
+    <section class="section section-alt" id="methods">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="kicker mono">Инструкция</p>
+            <h2>Как заваривать</h2>
+          </div>
+        </div>
+        <div class="methods-grid">
+          <article class="method">
+            <div class="method-head">
+              <span class="method-num mono">01</span>
+              <h3>Пуровер V60</h3>
+            </div>
+            <ul class="spec-list mono">
+              <li><span>кофе</span><i class="dots"></i><b>18 г</b></li>
+              <li><span>вода</span><i class="dots"></i><b>300 мл</b></li>
+              <li><span>температура</span><i class="dots"></i><b>93–95 °C</b></li>
+              <li><span>время</span><i class="dots"></i><b>2:30–3:00</b></li>
+            </ul>
+            <p>Помол средний, как морская соль. Заливай в три приёма, между ними давай слою осесть.</p>
+          </article>
+          <article class="method">
+            <div class="method-head">
+              <span class="method-num mono">02</span>
+              <h3>Аэропресс</h3>
+            </div>
+            <ul class="spec-list mono">
+              <li><span>кофе</span><i class="dots"></i><b>15 г</b></li>
+              <li><span>вода</span><i class="dots"></i><b>230 мл</b></li>
+              <li><span>температура</span><i class="dots"></i><b>85–88 °C</b></li>
+              <li><span>время</span><i class="dots"></i><b>1:30</b></li>
+            </ul>
+            <p>Помол чуть мельше сахара. Десять помешиваний — и прессуй: мягкая чашка без горечи.</p>
+          </article>
+          <article class="method">
+            <div class="method-head">
+              <span class="method-num mono">03</span>
+              <h3>Гейзер</h3>
+            </div>
+            <ul class="spec-list mono">
+              <li><span>кофе</span><i class="dots"></i><b>18 г</b></li>
+              <li><span>вода</span><i class="dots"></i><b>250 мл</b></li>
+              <li><span>температура</span><i class="dots"></i><b>кипяток в низ</b></li>
+              <li><span>время</span><i class="dots"></i><b>4–5 мин</b></li>
+            </ul>
+            <p>Помол крупнее сахара, иначе горчит. Сними с огня, как только зашипит, и охлади низ холодной водой.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Подписка ===== -->
+    <section class="section section-dark" id="sub">
+      <div class="container sub-grid">
+        <div class="sub-copy">
+          <p class="kicker mono">Подписка</p>
+          <h2>Кофе приезжает сам</h2>
+          <p>
+            Выбираешь частоту — мы жарим, мелем (если нужно) и привозим.
+            Каждый раз новое зерно из каталога: −10% и бесплатная доставка.
+          </p>
+        </div>
+        <form class="sub-form" id="sub-form" novalidate>
+          <div class="freq-cards" role="radiogroup" aria-label="Как часто привозить кофе">
+            <label class="freq-card">
+              <input type="radio" name="freq" value="2 недели" checked>
+              <span class="freq-title">Раз в 2 недели</span>
+              <span class="freq-hint mono">для ежедневных чашек</span>
+            </label>
+            <label class="freq-card">
+              <input type="radio" name="freq" value="месяц">
+              <span class="freq-title">Раз в месяц</span>
+              <span class="freq-hint mono">спокойный ритм</span>
+            </label>
+            <label class="freq-card">
+              <input type="radio" name="freq" value="6 недель">
+              <span class="freq-title">Раз в 6 недель</span>
+              <span class="freq-hint mono">если варим по выходным</span>
+            </label>
+          </div>
+          <div class="sub-input">
+            <input type="email" name="email" placeholder="твоя@почта.ру" required
+                   aria-label="Электронная почта" autocomplete="email">
+            <button class="btn btn-solid" type="submit">Оформить</button>
+          </div>
+          <p class="sub-note mono">Отписаться можно в один клик, спамить не будем.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== О нас ===== -->
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div class="about-copy">
+          <p class="kicker mono">О нас</p>
+          <h2>Три года, один ростер и упрямство</h2>
+          <p>
+            Мы начали в 2023-м с домашней ростерии на 500 граммов и мешка
+            зелёной Бразилии. Сейчас жарим на барабане по 12 килограммов,
+            но правило осталось то же: партия не продаётся дольше недели —
+            в четверг жарим новое.
+          </p>
+          <p>
+            Каждое зерно пробуем сами: спелый профиль ищем вслепую, а не по
+            шаблону «светлая кислинка». Иногда получается с третьего раза —
+            и это нормально.
+          </p>
+        </div>
+        <dl class="facts">
+          <div class="fact">
+            <dt class="mono">3 года</dt>
+            <dd>жарим и пробуем</dd>
+          </div>
+          <div class="fact">
+            <dt class="mono">14 сортов</dt>
+            <dd>в сезоне осень–зима</dd>
+          </div>
+          <div class="fact">
+            <dt class="mono">72 часа</dt>
+            <dd>от ростера до двери</dd>
+          </div>
+          <div class="fact">
+            <dt class="mono">100%</dt>
+            <dd>арабика, без примесей</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo">Углёк</span>
+          <p>Кофейная обжарка в центре города.<br>Жарим по четвергам — приезжай на запах.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Навигация в подвале">
+          <a href="#catalog">Каталог</a>
+          <a href="#methods">Как заваривать</a>
+          <a href="#sub">Подписка</a>
+          <a href="#about">О нас</a>
+        </nav>
+        <div class="footer-contacts mono">
+          <span>ул. Заводская, 7</span>
+          <span>чт–сб · 10:00–19:00</span>
+          <a href="mailto:privet@uglek.coffee">privet@uglek.coffee</a>
+        </div>
+      </div>
+      <div class="footer-bottom mono">
+        <span>© <span id="year">2026</span> Углёк</span>
+        <span>Сайт собран руками: HTML + CSS + JS</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>
