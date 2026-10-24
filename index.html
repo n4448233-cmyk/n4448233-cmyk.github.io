@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Портфолио — Ваше имя</title>
+  <meta name="description" content="Портфолио: проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph: так ссылка красиво выглядит, когда кидаешь её в телеграм -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Портфолио — Ваше имя">
+  <meta property="og:description" content="Проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#projects">Перейти к проектам</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="logo" href="#top"><span data-bind="name">Ваше имя</span></a>
+      <nav class="site-nav" aria-label="Основная навигация">
+        <a href="#projects">Проекты</a>
+        <a href="#about">Обо мне</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Приветствие =====
+         Текст ниже — заглушка. Замени на свой: кто ты и что делаешь,
+         одним-двумя предложениями, своими словами. -->
+    <section class="hero">
+      <div class="container">
+        <p class="kicker mono">Портфолио · 2026</p>
+        <h1 class="hero-title">
+          Собираю сайты и инструменты,<br>
+          которые <em>просто работают</em>.
+        </h1>
+        <p class="hero-text">
+          Привет! Я — <span data-bind="name">Ваше имя</span>. Здесь лежат проекты,
+          которые я сделал: от маленьких утилит для себя до полноценных сайтов.
+          Каждый — с историей о том, зачем он вообще появился.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#projects">Смотреть проекты</a>
+          <a class="btn btn-ghost" href="#contacts">Связаться</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Проекты =====
+         Сами проекты лежат в js/data.js — добавляй и меняй их там. -->
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-num mono">01</span>
+          <h2>Проекты</h2>
+          <span class="section-rule" aria-hidden="true"></span>
+        </div>
+        <div class="projects-grid" id="projects-grid">
+          <!-- карточки рендерятся из js/data.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Обо мне ===== -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-num mono">02</span>
+          <h2>Обо мне</h2>
+          <span class="section-rule" aria-hidden="true"></span>
+        </div>
+        <div class="about-grid">
+          <div class="about-text">
+            <!-- Замени на свой рассказ: чем занимаешься, что умеешь, что интересно. -->
+            <p>
+              Я занимаюсь веб-разработкой: верстаю интерфейсы, пишу логику на JavaScript
+              и довожу проекты до конца, а не до «примерно работает». Люблю, когда у
+              вещи есть одна понятная задача и она решена без лишнего.
+            </p>
+            <p>
+              Свободное время трачу на пет-проекты — на них и учусь. Ниже — стек, с
+              которым работаю чаще всего, но список открытый: под задачу легко осваиваю
+              новое.
+            </p>
+          </div>
+          <div class="about-stack">
+            <h3 class="mono">Инструменты</h3>
+            <ul class="stack-list mono">
+              <li>HTML / CSS</li>
+              <li>JavaScript</li>
+              <li>Git</li>
+              <li>Python</li>
+              <li>Figma</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Контакты ===== -->
+    <section class="section" id="contacts">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-num mono">03</span>
+          <h2>Контакты</h2>
+          <span class="section-rule" aria-hidden="true"></span>
+        </div>
+        <div class="contacts-inner">
+          <p class="contacts-lead">
+            Есть идея, проект или просто хочется сказать «привет» — пишите,
+            отвечаю быстро.
+          </p>
+          <div class="email-row">
+            <a class="email-link mono" id="email-link" href="mailto:you@example.com">you@example.com</a>
+            <button class="btn btn-ghost btn-small" id="copy-email" type="button">Скопировать</button>
+          </div>
+          <ul class="socials mono" id="socials">
+            <!-- ссылки подтягиваются из js/data.js -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span id="year">2026</span> <span data-bind="name">Ваше имя</span></span>
+      <span class="mono footer-note">HTML + CSS + немного JS</span>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
