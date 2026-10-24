@@ -28,6 +28,7 @@
 
 html {
   scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -342,6 +343,62 @@ h1, h2, h3 {
 
 /* ---------- Проекты ---------- */
 
+/* Вкладки-категории */
+.projects-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+
+.tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--ink);
+  border-color: #4a4a45;
+}
+
+.tab-btn.is-active {
+  color: #131312;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Пустая категория */
+.projects-empty {
+  display: none;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.projects-empty .mono {
+  display: block;
+  color: var(--accent);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.projects-empty p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -648,7 +705,27 @@ h1, h2, h3 {
   transform: none;
 }
 
+/* Появление карточек при переключении вкладки */
+.filter-in {
+  animation: filter-pop 0.45s ease both;
+}
+
+@keyframes filter-pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .filter-in {
+    animation: none;
+    opacity: 1;
+  }
   .reveal {
     opacity: 1;
     transform: none;

@@ -282,16 +282,80 @@
     return card;
   }
 
-  /* ---------- Сборка списка проектов ---------- */
+  /* ---------- Сборка списка проектов и вкладки-категории ---------- */
 
   var grid = document.getElementById("projects-grid");
+  var tabsBox = document.getElementById("projects-tabs");
 
   if (grid && typeof PROJECTS !== "undefined") {
+    var entries = []; // пары «карточка + проект» для фильтрации
+
     PROJECTS.forEach(function (project, index) {
       var card = renderProject(project, index);
       grid.appendChild(card);
       wireCoverGallery(card, project);
+      entries.push({ card: card, project: project });
     });
+
+    // Пустое состояние для категорий без работ
+    var emptyBox = document.createElement("div");
+    emptyBox.className = "projects-empty";
+    emptyBox.innerHTML =
+      '<span class="mono">скоро</span>' +
+      "<p>В этом разделе пока пусто — работы готовятся.</p>";
+    emptyBox.style.display = "none";
+    grid.parentNode.insertBefore(emptyBox, grid.nextSibling);
+
+    var applyFilter = function (category) {
+      var shown = 0;
+      entries.forEach(function (entry) {
+        var match =
+          category === "Все" || entry.project.category === category;
+        if (match) {
+          entry.card.style.display = "";
+          // перезапуск анимации появления
+          entry.card.classList.remove("filter-in");
+          entry.card.classList.add("is-visible"); // карточка уже в кадре — reveal не нужен
+        } else {
+          entry.card.style.display = "none";
+        }
+      });
+      // стаггер и запуск анимации вторым проходом после reflow
+      void grid.offsetWidth;
+      entries.forEach(function (entry) {
+        if (entry.card.style.display !== "none") {
+          entry.card.style.animationDelay = shown * 60 + "ms";
+          entry.card.classList.add("filter-in");
+          shown++;
+        }
+      });
+      emptyBox.style.display = shown === 0 ? "" : "none";
+      emptyBox.querySelector("p").textContent =
+        "В разделе «" + category + "» пока пусто — работы готовятся.";
+    };
+
+    if (tabsBox && typeof CATEGORIES !== "undefined") {
+      var buttons = [];
+      CATEGORIES.forEach(function (category, i) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tab-btn" + (i === 0 ? " is-active" : "");
+        btn.setAttribute("role", "tab");
+        btn.setAttribute("aria-selected", i === 0 ? "true" : "false");
+        btn.textContent = category;
+        btn.addEventListener("click", function () {
+          buttons.forEach(function (b) {
+            b.classList.remove("is-active");
+            b.setAttribute("aria-selected", "false");
+          });
+          btn.classList.add("is-active");
+          btn.setAttribute("aria-selected", "true");
+          applyFilter(category);
+        });
+        tabsBox.appendChild(btn);
+        buttons.push(btn);
+      });
+    }
   }
 
   /* ---------- Контакты ---------- */
