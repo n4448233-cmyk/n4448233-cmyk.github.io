@@ -12,10 +12,10 @@ const PROFILE = {
 // Куда писать: почта и ссылки на соцсети.
 // Ненужные строки просто удали.
 const CONTACTS = {
-  email: "you@example.com",
+  email: "n4448233@gmail.com",
   socials: [
-    { label: "GitHub", url: "https://github.com/username" },
-    { label: "Telegram", url: "https://t.me/username" },
+    { label: "GitHub", url: "https://github.com/n4448233-cmyk" },
+    { label: "Telegram", url: "https://t.me/sexsowa" },
   ],
 };
 

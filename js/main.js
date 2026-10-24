@@ -360,6 +360,25 @@
     });
   }
 
+  /* ---------- Бегущая строка ---------- */
+
+  // Анимация сдвигает трек на половину его ширины, поэтому половина ленты
+  // обязана быть шире экрана — иначе между повторами виден провал.
+  // Клонируем строки, пока это условие не выполнится (число копий чётное,
+  // чтобы обе половины трека совпадали и шов был незаметен).
+  var tickerTrack = document.querySelector(".ticker-track");
+  if (tickerTrack) {
+    var firstRun = tickerTrack.children[0];
+    var needed = function () {
+      return tickerTrack.scrollWidth / 2 < window.innerWidth + 200;
+    };
+    var guard = 0;
+    while (needed() && guard++ < 20) {
+      tickerTrack.appendChild(firstRun.cloneNode(true));
+      tickerTrack.appendChild(firstRun.cloneNode(true));
+    }
+  }
+
   /* ---------- Год в подвале ---------- */
 
   var year = document.getElementById("year");
