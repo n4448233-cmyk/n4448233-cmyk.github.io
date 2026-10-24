@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1a1040">
+<title>МОЗГОБУМ! — брейнрут-тапалка</title>
+<script src="https://sdk.games.s3.yandex.net/sdk.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="ui">
+
+  <!-- ===== HUD во время игры ===== -->
+  <div id="hud" class="hidden">
+    <div class="hud-row">
+      <div class="pill" id="scorePill"><span class="pill-ico">⭐</span><span id="score">0</span></div>
+      <div class="pill pill-time" id="timePill"><span id="time">60</span></div>
+      <button class="round-btn" id="pauseBtn" aria-label="pause">⏸</button>
+    </div>
+    <div id="comboTag"><span id="comboVal">x2</span></div>
+  </div>
+
+  <!-- ===== Меню ===== -->
+  <div id="menu" class="screen center">
+    <div id="logo" aria-label="МОЗГОБУМ">
+      <span class="l1">М</span><span class="l2">О</span><span class="l3">З</span><span class="l4">Г</span><span class="l5">О</span><span class="l6">Б</span><span class="l7">У</span><span class="l8">М</span><span class="l9">!</span>
+    </div>
+    <div class="tagline" data-i18n="tagline">лопай мозгоедов!</div>
+    <button class="mega-btn" id="playBtn" data-i18n="play">ИГРАТЬ</button>
+    <div class="best-line" id="menuBest"></div>
+    <div class="menu-hint" data-i18n="hint">тапай и води пальцем • тучки не трогай!</div>
+  </div>
+
+  <!-- ===== Конец раунда ===== -->
+  <div id="over" class="screen center hidden">
+    <div class="over-title" data-i18n="timeUp">ВРЕМЯ!</div>
+    <div id="stars">
+      <span class="star" id="star1">★</span>
+      <span class="star" id="star2">★</span>
+      <span class="star" id="star3">★</span>
+    </div>
+    <div class="final-label" data-i18n="score">ОЧКИ</div>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="best-line" id="overBest"></div>
+    <button class="mega-btn" id="againBtn" data-i18n="again">ЕЩЁ!</button>
+    <button class="link-btn" id="toMenuBtn" data-i18n="menu">в меню</button>
+  </div>
+
+  <!-- ===== Пауза ===== -->
+  <div id="pause" class="screen center hidden">
+    <div class="over-title" data-i18n="paused">ПАУЗА</div>
+    <button class="mega-btn" id="resumeBtn" data-i18n="resume">ДАЛЬШЕ</button>
+    <button class="link-btn" id="quitBtn" data-i18n="menu">в меню</button>
+  </div>
+
+  <!-- ===== Звук ===== -->
+  <button id="muteBtn" aria-label="sound">🔊</button>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/sdk.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
