@@ -1,0 +1,745 @@
+/* ============================================================
+   «Плакатня» — генератор постеров
+   Ночная типографская мастерская: тёплый чёрный, зерно плёнки,
+   световое пятно за курсором, стена афиш на скотче.
+   Один оранжевый. Никаких фотографий.
+   ============================================================ */
+
+:root {
+  --bg: #131110;         /* фон страницы — тёплый чёрный */
+  --bg-deep: #0C0B09;    /* темнее — бегущая строка, футер */
+  --card: #1C1916;       /* карточки */
+  --card-2: #23201B;     /* карточки при наведении */
+  --ink: #F0EBE1;        /* светлые «чернила» */
+  --ink-soft: #A29A89;   /* приглушённый текст */
+  --accent: #FF4D00;     /* один акцент */
+  --accent-2: #F0B429;   /* редкий второй акцент */
+  --line: #322E27;       /* волосные линии */
+  --f-display: "Unbounded", "Arial Black", sans-serif;
+  --f-body: "Inter", "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", "Consolas", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; background: var(--bg); }
+
+body {
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent); color: #140D08; }
+
+/* Зерно плёнки поверх всей страницы */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* Свет мастерской: тёплое пятно следует за курсором */
+.spot {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(700px circle at var(--mx, 74%) var(--my, 6%), rgba(255, 77, 0, 0.10), transparent 62%),
+    radial-gradient(900px circle at 12% 92%, rgba(240, 180, 41, 0.05), transparent 60%);
+}
+
+.mono { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: 0.02em; }
+
+a { color: inherit; }
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+/* Скроллбар под стать */
+::-webkit-scrollbar { width: 11px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: #3A352D; border-radius: 6px; border: 2px solid var(--bg-deep); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ============================================================
+   ШАПКА
+   ============================================================ */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  border-bottom: 1.5px solid var(--line);
+  background: rgba(19, 17, 16, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 19px;
+}
+
+.top-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14.5px;
+}
+
+.top-links a {
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.top-links a:hover { background: var(--card-2); }
+
+.top-links .to-machine {
+  background: var(--accent);
+  color: #140D08;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.top-links .to-machine:hover { background: var(--ink); }
+
+.top-links i { font-style: normal; margin-left: 4px; }
+
+/* ============================================================
+   БЕГУЩИЕ ЗВЁЗДЫ (разделители)
+   ============================================================ */
+
+@keyframes ticker {
+  to { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   ВСТУПЛЕНИЕ
+   ============================================================ */
+
+.intro {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 72px 24px 56px;
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.hello {
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+/* Мигающий курсор терминала — графика рождается из кода */
+.hello::after {
+  content: "▮";
+  margin-left: 8px;
+  animation: blink 1.15s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.intro-title {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(52px, 8.6vw, 118px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  margin-bottom: 22px;
+}
+
+/* вторая строка — контуром, как трафарет по стене */
+.intro-title .outline {
+  color: transparent;
+  -webkit-text-stroke: 2.5px var(--accent);
+}
+
+.intro-text {
+  max-width: 56ch;
+  color: var(--ink-soft);
+  font-size: 17.5px;
+}
+
+.intro-text b { color: var(--ink); }
+
+.intro-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.intro-tags span {
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: var(--ink-soft);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.intro-tags span:hover { border-color: var(--accent); color: var(--ink); }
+
+/* Наклейка с подсказкой про клавишу */
+.intro-sticker {
+  justify-self: end;
+  align-self: end;
+  background: var(--accent);
+  color: #140D08;
+  border-radius: 12px;
+  padding: 12px 18px;
+  transform: rotate(3deg);
+  box-shadow: 4px 4px 0 #000;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   МАШИНА
+   ============================================================ */
+
+.machine {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px 72px;
+  display: grid;
+  grid-template-columns: minmax(340px, 1fr) minmax(400px, 520px);
+  gap: 36px;
+  align-items: start;
+  justify-content: center;
+}
+
+/* --- сцена с постером --- */
+
+.stage-wrap { position: sticky; top: 96px; }
+
+.stage {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.stage-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  padding: 2px 4px 12px;
+}
+
+#stage-name { color: var(--ink); }
+
+.poster-tilt {
+  perspective: 1100px;
+}
+
+.poster-frame {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(240, 235, 225, 0.16);
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 6px 22px rgba(255, 77, 0, 0.10);
+  transition: transform 0.25s ease;
+  transform-style: preserve-3d;
+  line-height: 0;
+}
+
+.poster-frame svg { width: 100%; height: auto; display: block; }
+
+.stage-hint {
+  text-align: center;
+  color: var(--ink-soft);
+  padding-top: 12px;
+}
+
+/* --- панель управления --- */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.p-block {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 20px 20px;
+}
+
+.p-title {
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.p-note { color: var(--ink-soft); margin-top: 12px; line-height: 1.5; }
+
+/* Стили — карточки */
+.style-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.style-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  text-align: left;
+  transition: border-color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.style-card:hover { border-color: var(--ink-soft); transform: translateY(-1px); }
+
+.style-card.is-on {
+  border-color: var(--accent);
+  background: rgba(255, 77, 0, 0.09);
+  box-shadow: 3px 3px 0 #000;
+}
+
+.style-mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.style-mark svg { width: 100%; height: 100%; display: block; }
+
+.style-dots {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.style-dots i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.style-name { display: block; font-weight: 600; font-size: 15px; }
+
+.style-hint { display: block; font-size: 12px; color: var(--ink-soft); }
+
+/* Поля текста */
+.f {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.f:last-child { margin-bottom: 2px; }
+
+.f span { color: var(--ink-soft); text-transform: uppercase; }
+
+.f input {
+  font: 600 15px var(--f-body);
+  color: var(--ink);
+  background: #141210;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 13px;
+  transition: border-color 0.15s ease;
+}
+
+.f input::placeholder { color: #5C564B; }
+
+.f input:focus { outline: none; border-color: var(--accent); }
+
+/* Палитры — свотчи */
+.swatches { display: flex; flex-direction: column; gap: 8px; }
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.swatch:hover { border-color: var(--line); }
+
+.swatch.is-on { border-color: var(--accent); background: rgba(255, 77, 0, 0.09); }
+
+.swatch .dots { display: flex; gap: 5px; }
+
+.swatch .dots i {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.swatch-name { font-weight: 600; font-size: 14.5px; }
+
+.swatch-sign { margin-left: auto; color: var(--accent); font-weight: 700; opacity: 0; }
+
+.swatch.is-on .swatch-sign { opacity: 1; }
+
+/* Тумблеры */
+.toggles { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tgl {
+  padding: 9px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink-soft);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.tgl:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+.tgl[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #140D08;
+  font-weight: 600;
+  box-shadow: 3px 3px 0 #000;
+}
+
+/* Действия */
+.p-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.big-roll {
+  flex: 1;
+  min-width: 220px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--accent);
+  color: #140D08;
+  border-radius: 14px;
+  box-shadow: 5px 5px 0 #000;
+  padding: 16px 22px;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 17px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.big-roll:hover { transform: translate(-1px, -1px); box-shadow: 7px 7px 0 #000; }
+
+.big-roll:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #000; }
+
+.big-roll .dice {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform 0.35s ease;
+}
+
+.big-roll:hover .dice { transform: rotate(180deg); }
+
+.dl { display: flex; gap: 8px; }
+
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  font-weight: 600;
+  font-size: 14.5px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.dl-btn:hover { background: var(--card-2); border-color: var(--ink-soft); }
+
+.dl-btn:disabled { opacity: 0.5; cursor: wait; }
+
+/* ============================================================
+   ЗВЁЗДНЫЙ РАЗДЕЛИТЕЛЬ — ползёт в другую сторону
+   ============================================================ */
+
+.stars {
+  overflow: hidden;
+  padding: 26px 0;
+  user-select: none;
+}
+
+.stars .st-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 44s linear infinite reverse;
+  color: var(--accent);
+  font-size: 20px;
+  letter-spacing: 12px;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   СТЕНА АФИШ (галерея пресетов)
+   ============================================================ */
+
+.gallery {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 10px 24px 72px;
+}
+
+.g-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 34px;
+}
+
+.g-head h2 {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(30px, 4vw, 46px);
+}
+
+.g-head p { color: var(--ink-soft); }
+
+.g-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 34px 28px;
+}
+
+/* Плакаты висят на тёмной стене: чуть перекошены, на скотче */
+.g-item {
+  position: relative;
+  padding: 0;
+  text-align: left;
+  transform: rotate(-1.3deg);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.g-item:nth-child(2n) { transform: rotate(1.5deg) translateY(8px); }
+
+.g-item:nth-child(3n) { transform: rotate(-0.5deg) translateY(-4px); }
+
+.g-item:hover {
+  transform: rotate(0deg) translateY(-7px) scale(1.02);
+  filter: brightness(1.06);
+  z-index: 2;
+}
+
+/* кусочки скотча по верхним углам */
+.g-item::before,
+.g-item::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: -9px;
+  width: 62px;
+  height: 20px;
+  background: rgba(240, 235, 225, 0.13);
+  border: 1px solid rgba(240, 235, 225, 0.09);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+.g-item::before { left: 16px; transform: rotate(-5deg); }
+
+.g-item::after { right: 16px; transform: rotate(4deg); }
+
+.g-item .g-art {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(240, 235, 225, 0.14);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5);
+  line-height: 0;
+}
+
+.g-item svg { width: 100%; height: auto; display: block; }
+
+.g-item .g-cap {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 4px 0;
+}
+
+.g-cap .gc-name { font-weight: 600; font-size: 14.5px; }
+
+.g-cap .gc-style { color: var(--ink-soft); text-transform: uppercase; }
+
+/* ============================================================
+   КАК ЭТО УСТРОЕНО
+   ============================================================ */
+
+.how {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 10px 24px 72px;
+}
+
+.how h2 {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(30px, 4vw, 46px);
+  margin-bottom: 30px;
+}
+
+.how-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.how-steps li {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.how-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #140D08;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.how-steps h3 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.how-steps p { color: var(--ink-soft); font-size: 15px; }
+
+/* ============================================================
+   ФУТЕР
+   ============================================================ */
+
+.foot {
+  border-top: 1.5px solid var(--line);
+  background: var(--bg-deep);
+}
+
+.foot > div {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.foot-line:first-child { border-bottom: 1px solid var(--line); }
+
+.foot-line b {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.foot .dim { color: var(--ink-soft); }
+
+/* ============================================================
+   ТОСТ
+   ============================================================ */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 16px);
+  background: var(--card-2);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px 18px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 90;
+  max-width: min(92vw, 480px);
+  text-align: center;
+}
+
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+
+@media (max-width: 1060px) {
+  .machine { grid-template-columns: 1fr; }
+  .stage-wrap { position: static; }
+  .intro { grid-template-columns: 1fr; padding-top: 44px; }
+  .intro-sticker { justify-self: start; }
+}
+
+@media (max-width: 640px) {
+  .topbar { padding: 12px 16px; }
+  .top-links a:not(.to-machine) { display: none; }
+  .wrap, .intro, .machine, .gallery, .how { padding-left: 16px; padding-right: 16px; }
+  .g-grid, .how-steps { grid-template-columns: 1fr; }
+  .g-item, .g-item:nth-child(2n), .g-item:nth-child(3n) { transform: none; }
+  .p-actions { flex-direction: column; align-items: stretch; }
+  .dl { display: flex; }
+  .dl-btn { flex: 1; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ticker-track, .stars .st-track { animation: none; }
+  .hello::after { animation: none; }
+}

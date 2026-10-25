@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Плакатня — генератор постеров</title>
+  <meta name="description" content="Плакатня — ночная мастерская афиш: генеративный конструктор в тёмном интерфейсе. Четыре стиля, палитры, зерно и сетка. Собери постер и скачай в SVG или PNG.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Плакатня — генератор постеров">
+  <meta property="og:description" content="Ночная мастерская афиш: собери постер за минуту и скачай в SVG или PNG.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- световое пятно за курсором -->
+  <div class="spot" aria-hidden="true"></div>
+
+  <!-- ======= шапка ======= -->
+  <div class="topbar">
+    <a class="brand" href="#top">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="8" fill="#FF4D00"/>
+        <circle cx="12.5" cy="17" r="7.5" fill="#131110"/>
+        <rect x="17" y="7" width="8" height="8" rx="1.5" fill="#F0B429"/>
+      </svg>
+      <span>Плакатня</span>
+    </a>
+    <nav class="top-links" aria-label="Разделы">
+      <a href="#gallery">Стена афиш</a>
+      <a href="#how">Как это</a>
+      <a href="#machine" class="to-machine">К машине <i aria-hidden="true">↓</i></a>
+    </nav>
+  </div>
+
+  <main id="top">
+
+    <!-- ======= вступление ======= -->
+    <section class="intro">
+      <div class="intro-inner">
+        <p class="hello mono">ночная смена · конструктор афиш · без фото и стоков</p>
+        <h1 class="intro-title">
+          Плакат<br><span class="outline">из ничего</span>
+        </h1>
+        <p class="intro-text">
+          Мастерская работает ночью: четыре графических стиля, палитры,
+          типографика и немного шума. Крути параметры, жми «случайно» —
+          и забирай готовый постер в <b>SVG</b> или <b>PNG</b>.
+          Всё рисуется кодом прямо в браузере.
+        </p>
+        <div class="intro-tags mono" aria-hidden="true">
+          <span>Баухаус</span><span>Свисс</span><span>Брутализм</span><span>Неон</span>
+        </div>
+      </div>
+      <div class="intro-sticker mono" aria-hidden="true">R — случайный плакат</div>
+    </section>
+
+    <!-- ======= машина ======= -->
+    <section class="machine" id="machine" aria-label="Генератор постеров">
+      <div class="stage-wrap">
+        <div class="stage">
+          <div class="stage-top mono">
+            <span id="stage-name">Баухаус · Музей</span>
+            <span>600 × 800</span>
+          </div>
+          <div class="poster-tilt" id="poster-tilt">
+            <div class="poster-frame" id="poster"><!-- SVG вставляет main.js --></div>
+          </div>
+          <p class="stage-hint mono">наведи на плакат — он живой</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <section class="p-block">
+          <h2 class="p-title mono">Стиль</h2>
+          <div class="style-cards" id="style-cards"></div>
+        </section>
+
+        <section class="p-block">
+          <h2 class="p-title mono">Текст</h2>
+          <label class="f">
+            <span class="mono">заголовок</span>
+            <input id="f-title" type="text" maxlength="26" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="f">
+            <span class="mono">подзаголовок</span>
+            <input id="f-sub" type="text" maxlength="40" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="f">
+            <span class="mono">строка внизу</span>
+            <input id="f-meta" type="text" maxlength="42" autocomplete="off" spellcheck="false">
+          </label>
+        </section>
+
+        <section class="p-block">
+          <h2 class="p-title mono">Палитра</h2>
+          <div class="swatches" id="swatches"></div>
+        </section>
+
+        <section class="p-block">
+          <h2 class="p-title mono">Детали</h2>
+          <div class="toggles" id="toggles">
+            <button class="tgl mono" type="button" data-t="grain" aria-pressed="true">Зерно</button>
+            <button class="tgl mono" type="button" data-t="grid" aria-pressed="false">Сетка</button>
+            <button class="tgl mono" type="button" data-t="invert" aria-pressed="false">Инверсия</button>
+          </div>
+          <p class="p-note mono">зерно и сетка накладываются поверх, инверсия меняет местами фон и чернила</p>
+        </section>
+
+        <section class="p-block p-actions">
+          <button class="big-roll" type="button" id="roll">
+            <span class="dice" aria-hidden="true">⚄</span> Случайно
+          </button>
+          <div class="dl">
+            <button class="dl-btn" type="button" id="dl-svg">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SVG
+            </button>
+            <button class="dl-btn" type="button" id="dl-png">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              PNG
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ======= разделитель ======= -->
+    <div class="stars mono" aria-hidden="true">
+      <div class="st-track">
+        <span>✳✳✳✳✳✳✳✳✳✳✳✳</span><span>✳✳✳✳✳✳✳✳✳✳✳✳</span>
+      </div>
+    </div>
+
+    <!-- ======= стена афиш ======= -->
+    <section class="gallery" id="gallery">
+      <div class="g-head">
+        <h2>Стена афиш</h2>
+        <p class="mono">шесть заготовок — срывай со стены, крути в редакторе</p>
+      </div>
+      <div class="g-grid" id="g-grid"></div>
+    </section>
+
+    <div class="stars mono" aria-hidden="true">
+      <div class="st-track">
+        <span>✳✳✳✳✳✳✳✳✳✳✳✳</span><span>✳✳✳✳✳✳✳✳✳✳✳✳</span>
+      </div>
+    </div>
+
+    <!-- ======= как это работает ======= -->
+    <section class="how" id="how">
+      <h2>Как это устроено</h2>
+      <ol class="how-steps">
+        <li>
+          <span class="how-num mono">01</span>
+          <h3>Стиль решает всё</h3>
+          <p>Каждый стиль — свой набор фигур и типографика: круги Баухауса, сетка Свисса, рамки брутализма и свечение неона.</p>
+        </li>
+        <li>
+          <span class="how-num mono">02</span>
+          <h3>Случайность с якорем</h3>
+          <p>Положение фигур считает генератор случайных чисел с сидом. Один сид — один и тот же плакат, всегда.</p>
+        </li>
+        <li>
+          <span class="how-num mono">03</span>
+          <h3>Честные файлы</h3>
+          <p>SVG собирается строкой и уходит файлом как есть. PNG рисуется из него же на canvas — в двойном размере.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ======= футер ======= -->
+    <footer class="foot">
+      <div class="foot-line">
+        <b>Плакатня</b>
+        <span class="mono">собрано на чистом JS · вся графика генерируется кодом</span>
+      </div>
+      <div class="foot-line mono dim">
+        <span>© <span id="year">2026</span></span>
+        <span>HTML + CSS + SVG, без библиотек</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>
