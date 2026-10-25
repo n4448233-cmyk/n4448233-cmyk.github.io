@@ -10,6 +10,7 @@
 
   var ROAST_NAMES = { light: "светлая", medium: "средняя", dark: "тёмная" };
 
+  // Фото пачек: Unsplash (лицензия Unsplash — свободное использование без указания автора)
   var PRODUCTS = [
     {
       name: "Эфиопия · Иргачефф",
@@ -18,7 +19,7 @@
       roast: "light",
       level: 2,
       price: 890,
-      color: "#c9973a",
+      img: "img/product-ethiopia.jpg",
       num: "01",
     },
     {
@@ -28,7 +29,7 @@
       roast: "light",
       level: 2,
       price: 940,
-      color: "#a03b4e",
+      img: "img/product-kenya.jpg",
       num: "02",
     },
     {
@@ -38,7 +39,7 @@
       roast: "medium",
       level: 3,
       price: 790,
-      color: "#b3542e",
+      img: "img/product-colombia.jpg",
       num: "03",
     },
     {
@@ -48,7 +49,7 @@
       roast: "medium",
       level: 3,
       price: 690,
-      color: "#8a6a3f",
+      img: "img/product-brazil.jpg",
       num: "04",
     },
     {
@@ -58,7 +59,7 @@
       roast: "dark",
       level: 4,
       price: 820,
-      color: "#5c4632",
+      img: "img/product-guatemala.jpg",
       num: "05",
     },
     {
@@ -68,7 +69,8 @@
       roast: "dark",
       level: 4,
       price: 850,
-      color: "#3f4a3c",
+      img: "img/product-sumatra.jpg",
+      pos: "50% 32%",
       num: "06",
     },
   ];
@@ -81,21 +83,14 @@
     return div.innerHTML;
   }
 
-  // Пакетик на карточке: один и тот же силуэт, лента цвета сорта
-  function bagSvg(p) {
-    return (
-      '<svg viewBox="0 0 100 130" width="92" height="120" aria-hidden="true">' +
-      '<path d="M22 10h56l8 16v86a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V26l8-16z"' +
-      ' fill="#f7f2e7" stroke="#231409" stroke-width="2.5"/>' +
-      '<rect x="17" y="18" width="66" height="9" rx="2.5" fill="#231409"/>' +
-      '<rect x="26" y="44" width="48" height="56" fill="#231409"/>' +
-      '<rect x="26" y="44" width="48" height="12" fill="' + p.color + '"/>' +
-      '<text x="50" y="76" text-anchor="middle" fill="#f7f2e7"' +
-      ' font-family="JetBrains Mono, monospace" font-size="12">' + p.num + "</text>" +
-      '<text x="50" y="92" text-anchor="middle" fill="#f7f2e7"' +
-      ' font-family="JetBrains Mono, monospace" font-size="6.5" opacity=".8">' +
-      ROAST_NAMES[p.roast].toUpperCase() + " ОБЖАРКА</text></svg>"
-    );
+  // Теги вкусового профиля: «бергамот, персик» → отдельные чипы
+  function notesTags(notes) {
+    return notes
+      .split(", ")
+      .map(function (n) {
+        return "<span>" + escapeHtml(n) + "</span>";
+      })
+      .join("");
   }
 
   /* ---------- Тост ---------- */
@@ -162,14 +157,19 @@
     }
 
     card.innerHTML =
-      '<div class="prod-art">' + bagSvg(p) + "</div>" +
+      '<div class="prod-media">' +
+      '<img src="' + p.img + '" alt="Пачка кофе — ' + escapeHtml(p.name) + '" loading="lazy" width="800" height="600"' +
+      (p.pos ? ' style="object-position:' + p.pos + '"' : "") + ">" +
+      '<span class="prod-badge mono">№ ' + p.num + "</span>" +
+      '<span class="prod-roast mono">' + ROAST_NAMES[p.roast] + " обжарка</span>" +
+      "</div>" +
       '<div class="prod-info">' +
       '<div class="prod-top">' +
       '<h3 class="prod-name">' + escapeHtml(p.name) + "</h3>" +
       '<span class="roast-dots" title="Обжарка: ' + ROAST_NAMES[p.roast] + '">' + dots + "</span>" +
       "</div>" +
-      '<p class="prod-meta mono">' + escapeHtml(p.meta) + " · " + ROAST_NAMES[p.roast] + " обжарка</p>" +
-      '<p class="prod-notes">' + escapeHtml(p.notes) + "</p>" +
+      '<p class="prod-meta mono">' + escapeHtml(p.meta) + "</p>" +
+      '<div class="prod-tags">' + notesTags(p.notes) + "</div>" +
       '<div class="prod-buy">' +
       '<div class="weight-seg" role="group" aria-label="Вес упаковки">' +
       '<button type="button" data-weight="g" class="is-active">250 г</button>' +

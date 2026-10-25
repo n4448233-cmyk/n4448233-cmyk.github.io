@@ -75,35 +75,29 @@
           <p class="hero-note mono">100% арабика · зерно и помол под любую заварку</p>
         </div>
 
-        <div class="hero-art" aria-hidden="true">
-          <svg class="bag-svg" viewBox="0 0 340 420" role="img">
-            <circle class="sun" cx="205" cy="185" r="150"/>
-            <!-- пакет -->
-            <g class="bag">
-              <path d="M95 96h150l14 34v238a16 16 0 0 1-16 16H97a16 16 0 0 1-16-16V130l14-34z" fill="#f7f2e7" stroke="#231409" stroke-width="3"/>
-              <!-- зип-замок -->
-              <rect x="86" y="112" width="168" height="20" rx="4" fill="#231409"/>
-              <path d="M92 122h156" stroke="#f7f2e7" stroke-width="2" stroke-dasharray="3 5"/>
-              <!-- лента дегазационного клапана -->
-              <circle cx="216" cy="158" r="9" fill="none" stroke="#231409" stroke-width="2"/>
-              <!-- этикетка -->
-              <rect x="112" y="196" width="116" height="132" fill="#231409"/>
-              <text x="170" y="230" text-anchor="middle" fill="#f7f2e7" font-size="13" letter-spacing="3">УГЛЁК</text>
-              <line x1="132" y1="242" x2="208" y2="242" stroke="#bf4524" stroke-width="2"/>
-              <text x="170" y="268" text-anchor="middle" fill="#f7f2e7" font-size="11" opacity=".85">ОБЖАРКА № 214</text>
-              <text x="170" y="288" text-anchor="middle" fill="#f7f2e7" font-size="11" opacity=".85">ЧЕТВЕРГ · 12 КГ</text>
-              <text x="170" y="312" text-anchor="middle" fill="#bf4524" font-size="12">ЭФИОПИЯ</text>
-            </g>
-            <!-- зёрна у подножия -->
-            <g class="beans" stroke="#231409" stroke-width="2">
-              <ellipse cx="104" cy="398" rx="17" ry="12" transform="rotate(-18 104 398)" fill="#a4643a"/>
-              <path d="M90 402c8-6 17-8 27-6" fill="none"/>
-              <ellipse cx="196" cy="404" rx="16" ry="11" transform="rotate(12 196 404)" fill="#8a4a2b"/>
-              <path d="M182 403c8-5 17-6 27-3" fill="none"/>
-              <ellipse cx="146" cy="412" rx="14" ry="10" transform="rotate(-30 146 412)" fill="#6f3d24"/>
-              <path d="M134 418c7-6 15-8 24-7" fill="none"/>
-            </g>
-          </svg>
+        <!-- Фото: Unsplash (свободная лицензия) -->
+        <div class="hero-art">
+          <div class="hero-photo-wrap">
+            <img class="hero-photo" src="img/hero-bag.jpg"
+                 alt="Пачка свежеобжаренного кофе рядом с чашкой" width="1000" height="667"
+                 fetchpriority="high" decoding="async">
+          </div>
+          <div class="hero-stamp" aria-hidden="true">
+            <svg viewBox="0 0 140 140">
+              <defs>
+                <path id="stamp-circ" d="M70,70 m-51,0 a51,51 0 1,1 102,0 a51,51 0 1,1 -102,0"/>
+              </defs>
+              <circle cx="70" cy="70" r="67" fill="var(--paper)"/>
+              <g class="stamp-rotor">
+                <text class="stamp-text">
+                  <textPath href="#stamp-circ">свежая обжарка · каждый четверг ·</textPath>
+                </text>
+              </g>
+              <circle cx="70" cy="70" r="33" fill="none" stroke="var(--rust)" stroke-width="1.5" stroke-dasharray="3 5"/>
+              <text x="70" y="72" text-anchor="middle" class="stamp-num mono">72</text>
+              <text x="70" y="90" text-anchor="middle" class="stamp-unit mono">часа</text>
+            </svg>
+          </div>
         </div>
       </div>
     </section>
@@ -111,8 +105,10 @@
     <!-- ===== бегущая строка ===== -->
     <div class="ticker" aria-hidden="true">
       <div class="ticker-track mono">
-        <span>Свежая обжарка · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · четверг — день ростера · </span>
-        <span>Свежая обжарка · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · четверг — день ростера · </span>
+        <span>Свежая обжарка · <em>четверг — день ростера</em> · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · зерно не старше 72 часов · </span>
+        <span>Свежая обжарка · <em>четверг — день ростера</em> · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · зерно не старше 72 часов · </span>
+        <span>Свежая обжарка · <em>четверг — день ростера</em> · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · зерно не старше 72 часов · </span>
+        <span>Свежая обжарка · <em>четверг — день ростера</em> · Эфиопия · Кения · Колумбия · Бразилия · Гватемала · Суматра · зерно не старше 72 часов · </span>
       </div>
     </div>
 
@@ -135,6 +131,14 @@
           <!-- карточки рендерятся из main.js -->
         </div>
       </div>
+    </section>
+
+    <!-- ===== Интерлюдия с фото ===== -->
+    <section class="interlude" aria-label="Наш ростер">
+      <blockquote class="interlude-quote">
+        <p>Свежесть — это не вкус, а дата.<br>Мы просто не продаём вчерашний кофе.</p>
+        <cite class="mono">ростер «Углёк-2» · четверг, 08:40</cite>
+      </blockquote>
     </section>
 
     <!-- ===== Методы заваривания ===== -->
@@ -200,6 +204,11 @@
             Выбираешь частоту — мы жарим, мелем (если нужно) и привозим.
             Каждый раз новое зерно из каталога: −10% и бесплатная доставка.
           </p>
+          <!-- Фото: Wikimedia Commons (André Karwath, CC BY-SA) -->
+          <figure class="sub-photo">
+            <img src="img/beans-roasted.jpg" alt="Свежеобжаренные кофейные зёрна крупным планом" loading="lazy" width="1100" height="825">
+            <figcaption class="mono">зерно четверга · обжарка № 214</figcaption>
+          </figure>
         </div>
         <form class="sub-form" id="sub-form" novalidate>
           <div class="freq-cards" role="radiogroup" aria-label="Как часто привозить кофе">
@@ -231,10 +240,33 @@
 
     <!-- ===== О нас ===== -->
     <section class="section" id="about">
-      <div class="container about-grid">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="kicker mono">О нас</p>
+            <h2>Три года, один ростер и упрямство</h2>
+          </div>
+        </div>
+        <!-- Фото: Wikimedia Commons (зелёное зерно, лоток ростера, пуровер) -->
+        <ol class="process">
+          <li class="process-step">
+            <img src="img/beans.jpg" alt="Зелёные кофейные зёрна" loading="lazy">
+            <span class="process-num mono">01</span>
+            <span class="process-cap mono">зелёное зерно</span>
+          </li>
+          <li class="process-step">
+            <img src="img/roast.jpg" alt="Лоток ростера со свежеобжаренным зерном" loading="lazy">
+            <span class="process-num mono">02</span>
+            <span class="process-cap mono">обжарка</span>
+          </li>
+          <li class="process-step">
+            <img src="img/pourover.jpg" alt="Заваривание пуровера — чайник льёт воду в воронку" loading="lazy">
+            <span class="process-num mono">03</span>
+            <span class="process-cap mono">чашка</span>
+          </li>
+        </ol>
+        <div class="about-grid">
         <div class="about-copy">
-          <p class="kicker mono">О нас</p>
-          <h2>Три года, один ростер и упрямство</h2>
           <p>
             Мы начали в 2023-м с домашней ростерии на 500 граммов и мешка
             зелёной Бразилии. Сейчас жарим на барабане по 12 килограммов,
@@ -265,6 +297,7 @@
             <dd>арабика, без примесей</dd>
           </div>
         </dl>
+        </div>
       </div>
     </section>
 
