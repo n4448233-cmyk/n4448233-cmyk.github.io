@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CustomGround — демо плагина для Discord</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #141517;
+    color: #dbdee1;
+    font-family: "gg sans", "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 48px;
+  }
+
+  .page-head { width: min(1060px, 100%); margin-bottom: 18px; }
+  .page-head a { color: #8b8f94; text-decoration: none; font-size: 13px; }
+  .page-head a:hover { color: #fff; }
+  .page-head h1 { font-size: 26px; color: #f2f3f5; margin-top: 6px; }
+  .page-head h1 em { color: #5865f2; font-style: normal; }
+  .page-head p { color: #949ba4; font-size: 14px; margin-top: 4px; max-width: 720px; }
+
+  .wrap { width: min(1060px, 100%); display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+
+  /* ===== мок окна Discord ===== */
+  .mock {
+    flex: 1 1 620px;
+    min-width: 320px;
+    aspect-ratio: 16 / 10;
+    background: #111214;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 12px 32px rgba(0,0,0,.5);
+    user-select: none;
+    touch-action: none;
+    cursor: grab;
+  }
+  .mock.dragging { cursor: grabbing; }
+
+  .bg {
+    position: absolute; inset: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: linear-gradient(135deg, #1a2a6c, #b21f1f 55%, #fdbb2d);
+    z-index: 0;
+  }
+  .dim { position: absolute; inset: 0; background: rgba(0,0,0,.45); z-index: 1; pointer-events: none; }
+
+  .ui { position: absolute; inset: 0; z-index: 2; display: flex; pointer-events: none; }
+  .ui > * { pointer-events: auto; }
+
+  .rail {
+    width: 52px; background: rgba(0,0,0,.35);
+    display: flex; flex-direction: column; align-items: center; padding: 10px 0; gap: 8px;
+  }
+  .rail .srv {
+    width: 34px; height: 34px; border-radius: 12px;
+    background: rgba(255,255,255,.12); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .rail .srv.active { border-radius: 10px; background: #5865f2; }
+
+  .side {
+    width: 168px; background: rgba(0,0,0,.30);
+    padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; font-size: 13px;
+  }
+  .side .srv-name { color: #fff; font-weight: 700; padding: 4px 6px 10px; }
+  .side .ch { color: #949ba4; padding: 4px 6px; border-radius: 4px; display: flex; gap: 6px; align-items: center; }
+  .side .ch.active { background: rgba(255,255,255,.10); color: #f2f3f5; }
+  .side .me {
+    margin-top: auto; background: rgba(0,0,0,.45); border-radius: 8px;
+    padding: 8px; display: flex; gap: 8px; align-items: center;
+  }
+  .side .me .dot { width: 26px; height: 26px; border-radius: 50%; background: #5865f2; color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+
+  .chat { flex: 1; display: flex; flex-direction: column; background: rgba(0,0,0,.22); min-width: 0; }
+  .chat .head {
+    padding: 10px 14px; color: #f2f3f5; font-weight: 700; font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .chat .log { flex: 1; padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .msg { display: flex; gap: 10px; }
+  .ava { width: 32px; height: 32px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; }
+  .msg .who { font-size: 13px; font-weight: 700; color: #f2f3f5; }
+  .msg .txt { font-size: 13px; color: #dbdee1; line-height: 1.35; }
+  .chat .input {
+    margin: 0 12px 12px; background: rgba(0,0,0,.45); border-radius: 8px;
+    padding: 9px 12px; font-size: 13px; color: #6d6f78;
+  }
+
+  .wm {
+    position: absolute; right: 8px; bottom: 5px; z-index: 3;
+    color: rgba(255,255,255,.5); font-size: 11px; font-weight: 600;
+    letter-spacing: .3px; text-shadow: 0 1px 2px rgba(0,0,0,.8); pointer-events: none;
+  }
+
+  /* ===== панель управления ===== */
+  .panel {
+    flex: 0 1 340px; min-width: 280px;
+    background: #1e1f22; border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .panel h2 { font-size: 15px; color: #f2f3f5; }
+  .panel .note { font-size: 12px; color: #949ba4; line-height: 1.45; }
+  .field label { font-size: 12px; color: #b5bac1; display: block; margin-bottom: 6px; }
+  .presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .presets div { height: 34px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; }
+  .presets div.sel { border-color: #fff; }
+  input[type="file"] { display: none; }
+  .btn {
+    background: #5865f2; color: #fff; border: none; border-radius: 4px;
+    padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; width: 100%;
+  }
+  .btn:hover { filter: brightness(1.15); }
+  input[type="range"] { width: 100%; accent-color: #5865f2; }
+  .row { display: flex; justify-content: space-between; font-size: 12px; color: #b5bac1; }
+  .switch { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #dbdee1; }
+  .tg { width: 34px; height: 20px; border-radius: 10px; background: #72767d; position: relative; cursor: pointer; transition: .15s; }
+  .tg::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: .15s; }
+  .tg.on { background: #5865f2; }
+  .tg.on::after { left: 17px; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <a href="../../index.html#projects">← назад в портфолио</a>
+  <h1>CustomGround <em>· демо плагина фона для Discord</em></h1>
+  <p>Это веб-версия плагина для BetterDiscord: выбери картинку, потяни фон мышкой,
+  покрути затемнение и блюр — прямо здесь. Настоящий плагин делает всё то же самое
+  в клиенте Discord.</p>
+</div>
+
+<div class="wrap">
+  <div class="mock" id="mock">
+    <div class="bg" id="bg"></div>
+    <div class="dim" id="dim"></div>
+    <div class="ui">
+      <div class="rail">
+        <div class="srv active">🎮</div>
+        <div class="srv">🖤</div>
+        <div class="srv">Д</div>
+        <div class="srv">+</div>
+      </div>
+      <div class="side">
+        <div class="srv-name">Батя в деле</div>
+        <div class="ch active"># общий</div>
+        <div class="ch"># мемы</div>
+        <div class="ch"># музон</div>
+        <div class="me"><span class="dot">S</span><span style="font-size:12px;color:#f2f3f5">Sexsowa</span></div>
+      </div>
+      <div class="chat">
+        <div class="head"># общий</div>
+        <div class="log">
+          <div class="msg"><div class="ava" style="background:#5865f2">S</div>
+            <div><div class="who">Sexsowa</div><div class="txt">поставил себе новый фон, оцените 🔥</div></div></div>
+          <div class="msg"><div class="ava" style="background:#3ba55c">K</div>
+            <div><div class="who">Kolyan</div><div class="txt">это через что сделано?</div></div></div>
+          <div class="msg"><div class="ava" style="background:#5865f2">S</div>
+            <div><div class="who">Sexsowa</div><div class="txt">CustomGround by Sexsowa, всё честно своё</div></div></div>
+          <div class="msg"><div class="ava" style="background:#faa61a">Д</div>
+            <div><div class="who">Дима</div><div class="txt">затемнение крутани и блюр добавь, вообще топ будет</div></div></div>
+        </div>
+        <div class="input">Написать в # общий…</div>
+      </div>
+    </div>
+    <div class="wm" id="wm">CustomGround by Sexsowa</div>
+  </div>
+
+  <div class="panel">
+    <h2>Настройки</h2>
+
+    <div class="field">
+      <label>Заготовки</label>
+      <div class="presets" id="presets"></div>
+    </div>
+
+    <div class="field">
+      <label>Своя картинка</label>
+      <button class="btn" id="pick">Выбрать файл с компьютера</button>
+      <input type="file" id="file" accept="image/*">
+    </div>
+
+    <div class="field">
+      <div class="row"><span>Затемнение</span><span id="dimV">45%</span></div>
+      <input type="range" id="dim" min="0" max="100" value="45">
+    </div>
+
+    <div class="field">
+      <div class="row"><span>Блюр</span><span id="blurV">0 px</span></div>
+      <input type="range" id="blur" min="0" max="50" value="0">
+    </div>
+
+    <div class="switch">
+      <span>Вотермарка</span>
+      <div class="tg on" id="wmTg"></div>
+    </div>
+
+    <p class="note">Мышкой по окну — двигать фон, колесо — зум. Как в редакторе плагина.</p>
+  </div>
+</div>
+
+<script>
+const PRESETS = [
+  "linear-gradient(135deg, #1a2a6c, #b21f1f 55%, #fdbb2d)",
+  "linear-gradient(160deg, #0f2027, #203a43, #2c5364)",
+  "linear-gradient(135deg, #41295a, #2f0743)",
+  "linear-gradient(135deg, #ff6a00, #ee0979)"
+];
+const GRAD_W = 1920, GRAD_H = 1080;
+
+const st = { src: PRESETS[0], iw: GRAD_W, ih: GRAD_H, dim: 45, blur: 0, wm: true,
+             scale: 0, offX: 0, offY: 0 };
+
+const bg = document.getElementById("bg");
+const mock = document.getElementById("mock");
+const dimEl = document.getElementById("dim");
+const wmEl = document.getElementById("wm");
+
+const coverOf = (w, h) => 100 * Math.max(1, (h / w) * (st.iw / st.ih));
+const cover = () => coverOf(mock.clientWidth, mock.clientHeight);
+const dispW = () => mock.clientWidth * st.scale / 100;
+const dispH = () => dispW() * st.ih / st.iw;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+function reset() {
+  st.scale = cover();
+  st.offX = (mock.clientWidth - dispW()) / 2;
+  st.offY = (mock.clientHeight - dispH()) / 2;
+}
+
+function render() {
+  bg.style.backgroundImage = st.src.startsWith("data:") ? `url("${st.src}")` : st.src;
+  bg.style.backgroundSize = `${st.scale}% auto`;
+  bg.style.backgroundPosition = `${st.offX}px ${st.offY}px`;
+  bg.style.filter = st.blur > 0 ? `blur(${st.blur}px)` : "";
+  dimEl.style.background = `rgba(0,0,0,${st.dim / 100})`;
+  wmEl.style.display = st.wm ? "" : "none";
+}
+
+function setSrc(src, iw, ih) {
+  st.src = src; st.iw = iw; st.ih = ih;
+  reset(); render();
+}
+
+// пресеты
+const presetsEl = document.getElementById("presets");
+PRESETS.forEach((p, i) => {
+  const d = document.createElement("div");
+  d.style.background = p;
+  if (i === 0) d.classList.add("sel");
+  d.onclick = () => {
+    presetsEl.querySelectorAll("div").forEach(x => x.classList.remove("sel"));
+    d.classList.add("sel");
+    setSrc(p, GRAD_W, GRAD_H);
+  };
+  presetsEl.appendChild(d);
+});
+
+// свой файл
+const fileEl = document.getElementById("file");
+document.getElementById("pick").onclick = () => fileEl.click();
+fileEl.onchange = () => {
+  const f = fileEl.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      presetsEl.querySelectorAll("div").forEach(x => x.classList.remove("sel"));
+      setSrc(r.result, img.naturalWidth, img.naturalHeight);
+    };
+    img.src = r.result;
+  };
+  r.readAsDataURL(f);
+};
+
+// слайдеры
+const dimR = document.getElementById("dim");
+dimR.oninput = () => { st.dim = +dimR.value; document.getElementById("dimV").textContent = st.dim + "%"; render(); };
+const blurR = document.getElementById("blur");
+blurR.oninput = () => { st.blur = +blurR.value; document.getElementById("blurV").textContent = st.blur + " px"; render(); };
+
+// вотермарка
+const wmTg = document.getElementById("wmTg");
+wmTg.onclick = () => { st.wm = !st.wm; wmTg.classList.toggle("on", st.wm); render(); };
+
+// драг и зум
+let drag = null;
+mock.addEventListener("pointerdown", e => {
+  drag = { x: e.clientX, y: e.clientY };
+  mock.classList.add("dragging");
+  mock.setPointerCapture(e.pointerId);
+});
+mock.addEventListener("pointermove", e => {
+  if (!drag) return;
+  st.offX = clamp(st.offX + e.clientX - drag.x, mock.clientWidth - dispW(), 0);
+  st.offY = clamp(st.offY + e.clientY - drag.y, mock.clientHeight - dispH(), 0);
+  drag = { x: e.clientX, y: e.clientY };
+  render();
+});
+const endDrag = () => { drag = null; mock.classList.remove("dragging"); };
+mock.addEventListener("pointerup", endDrag);
+mock.addEventListener("pointercancel", endDrag);
+mock.addEventListener("wheel", e => {
+  e.preventDefault();
+  st.scale = clamp(st.scale * (e.deltaY < 0 ? 1.1 : 0.9), cover(), cover() * 6);
+  st.offX = clamp(st.offX, mock.clientWidth - dispW(), 0);
+  st.offY = clamp(st.offY, mock.clientHeight - dispH(), 0);
+  render();
+}, { passive: false });
+
+window.addEventListener("resize", () => { reset(); render(); });
+reset();
+render();
+</script>
+</body>
+</html>
