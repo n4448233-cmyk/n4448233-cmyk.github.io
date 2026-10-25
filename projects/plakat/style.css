@@ -131,14 +131,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .top-links i { font-style: normal; margin-left: 4px; }
 
 /* ============================================================
-   БЕГУЩИЕ ЗВЁЗДЫ (разделители)
-   ============================================================ */
-
-@keyframes ticker {
-  to { transform: translateX(-50%); }
-}
-
-/* ============================================================
    ВСТУПЛЕНИЕ
    ============================================================ */
 
@@ -498,26 +490,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .dl-btn:disabled { opacity: 0.5; cursor: wait; }
 
 /* ============================================================
-   ЗВЁЗДНЫЙ РАЗДЕЛИТЕЛЬ — ползёт в другую сторону
-   ============================================================ */
-
-.stars {
-  overflow: hidden;
-  padding: 26px 0;
-  user-select: none;
-}
-
-.stars .st-track {
-  display: flex;
-  width: max-content;
-  animation: ticker 44s linear infinite reverse;
-  color: var(--accent);
-  font-size: 20px;
-  letter-spacing: 12px;
-  white-space: nowrap;
-}
-
-/* ============================================================
    СТЕНА АФИШ (галерея пресетов)
    ============================================================ */
 
@@ -740,6 +712,5 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ticker-track, .stars .st-track { animation: none; }
   .hello::after { animation: none; }
 }
