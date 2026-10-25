@@ -325,6 +325,34 @@ h2 {
   margin: 0;
 }
 
+/* живой счётчик до обжарки */
+.hero-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 10px 16px;
+  border: 1.5px dashed rgba(191, 69, 36, 0.55);
+  border-radius: 999px;
+  background: rgba(191, 69, 36, 0.05);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.cd-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--rust);
+  animation: cdPulse 1.6s ease infinite;
+}
+
+@keyframes cdPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(191, 69, 36, 0.45); }
+  70%      { box-shadow: 0 0 0 7px rgba(191, 69, 36, 0); }
+}
+
 .hero-art {
   position: relative;
   display: grid;
@@ -353,6 +381,9 @@ h2 {
   overflow: hidden;
   box-shadow: 0 30px 60px rgba(35, 20, 9, 0.22);
   border: 6px solid var(--on-dark);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s ease;
+  will-change: transform;
 }
 
 .hero-photo {
@@ -777,6 +808,243 @@ h2 {
   font-size: 0.92rem;
 }
 
+/* ---------- Профиль обжарки ---------- */
+
+.section-lead {
+  max-width: 420px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.roast-chart {
+  margin: 0;
+  padding: 26px 22px 16px;
+  background: #faf6ec;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.roast-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.roast-chart .grid-lines line {
+  stroke: var(--line);
+  stroke-dasharray: 2 6;
+  opacity: 0.7;
+}
+
+.roast-chart .axis {
+  stroke: rgba(35, 20, 9, 0.35);
+  stroke-width: 1.5;
+}
+
+.roast-chart .ax-lbl text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.roast-chart .curve-line {
+  fill: none;
+  stroke: var(--rust);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.reveal.is-visible .curve-line {
+  transition: stroke-dashoffset 2.4s cubic-bezier(0.45, 0, 0.2, 1) 0.25s;
+  stroke-dashoffset: 0;
+}
+
+.roast-chart .curve-dot {
+  fill: var(--paper);
+  stroke: var(--rust);
+  stroke-width: 2.5;
+  opacity: 0;
+  transform: scale(0.3);
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal.is-visible .curve-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.roast-chart .curve-lbl {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  fill: var(--muted);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.reveal.is-visible .curve-lbl {
+  opacity: 1;
+}
+
+.roast-chart figcaption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Конструктор блендов ---------- */
+
+.blend-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.origin-chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.origin-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: #faf6ec;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.origin-chip:hover {
+  border-color: var(--ink);
+}
+
+.origin-chip:active {
+  transform: translateY(1px);
+}
+
+.origin-chip.is-active {
+  border-color: var(--rust);
+  background: rgba(191, 69, 36, 0.07);
+}
+
+.oc-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.oc-notes {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.blend-panel {
+  border: 1px solid var(--line);
+  background: #faf6ec;
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.blend-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.blend-slot {
+  position: relative;
+  min-height: 64px;
+  padding: 10px 26px 10px 12px;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-align: left;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.blend-slot:hover {
+  border-color: var(--muted);
+}
+
+.blend-slot.is-filled {
+  border-style: solid;
+  border-color: var(--rust);
+  background: rgba(191, 69, 36, 0.06);
+  color: var(--ink);
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.blend-slot.is-filled::after {
+  content: "×";
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: var(--rust);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.blend-name {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 6px;
+  min-height: 1.15em;
+}
+
+.blend-notes {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0 0 18px;
+  min-height: 1.2em;
+}
+
+.blend-buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.blend-price {
+  font-size: 1.3rem;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.blend-hint {
+  margin: 14px 0 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
 /* ---------- Подписка ---------- */
 
 .sub-grid {
@@ -1060,6 +1328,10 @@ h2 {
   /* ленту не останавливаем — это ключевой элемент дизайна, только замедляем */
   .ticker-track { animation-duration: 90s; }
   .hero-stamp .stamp-rotor { animation: none; }
+  .cd-dot { animation: none; }
+  .hero-photo-wrap { transform: none; transition: none; }
+  .curve-line { stroke-dashoffset: 0; transition: none; }
+  .curve-dot, .curve-lbl { opacity: 1; transform: none; transition: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 
@@ -1171,6 +1443,15 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .blend-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .blend-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .sub-grid,
   .about-grid {
     grid-template-columns: 1fr;
@@ -1270,6 +1551,19 @@ h2 {
 @media (max-width: 480px) {
   .container {
     padding: 0 20px;
+  }
+
+  .blend-slots {
+    grid-template-columns: 1fr;
+  }
+
+  .blend-slot {
+    min-height: 48px;
+  }
+
+  .hero-countdown {
+    font-size: 0.74rem;
+    padding: 9px 13px;
   }
 
   .sub-input {

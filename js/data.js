@@ -47,7 +47,7 @@ const PROJECTS = [
   {
     title: "«Углёк» — сайт кофейной обжарки",
     description:
-      "Лендинг для локальной обжарки: каталог с фильтром по степени обжарки, переключение веса, корзина-счётчик и подписка. Настоящие фотографии пачек и зерна (Unsplash / Wikimedia Commons), фирменный штамп и адаптив от телефона до десктопа.",
+      "Лендинг для локальной обжарки: каталог с фильтром по обжарке, конструктор блендов, живой счётчик до ближайшей обжарки, анимированный график профиля и подписка. Настоящие фотографии пачек и зерна (Unsplash / Wikimedia Commons), адаптив от телефона до десктопа.",
     category: "Сайты",
     tags: ["HTML", "CSS", "JavaScript", "SVG", "адаптив"],
     images: [
@@ -55,6 +55,7 @@ const PROJECTS = [
       "img/projects/uglek-2.png",
       "img/projects/uglek-3.png",
       "img/projects/uglek-4.png",
+      "img/projects/uglek-5.png",
     ],
     demo: "projects/uglek/index.html",
     source: "",

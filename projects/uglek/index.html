@@ -35,6 +35,7 @@
       <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
         <a href="#catalog">Каталог</a>
         <a href="#methods">Как заваривать</a>
+        <a href="#blend">Бленд</a>
         <a href="#sub">Подписка</a>
         <a href="#about">О нас</a>
       </nav>
@@ -71,6 +72,10 @@
           <div class="hero-actions">
             <a class="btn btn-solid" href="#catalog">Выбрать кофе</a>
             <a class="btn btn-ghost" href="#about">Как мы жарим</a>
+          </div>
+          <div class="hero-countdown mono" role="timer" id="roast-countdown">
+            <span class="cd-dot" aria-hidden="true"></span>
+            <span id="cd-text">считаем до четверга…</span>
           </div>
           <p class="hero-note mono">100% арабика · зерно и помол под любую заварку</p>
         </div>
@@ -141,6 +146,69 @@
       </blockquote>
     </section>
 
+    <!-- ===== Профиль обжарки ===== -->
+    <section class="section" id="roast">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="kicker mono">Профиль</p>
+            <h2>Кривая партии № 214</h2>
+          </div>
+          <p class="section-lead">Каждая партия идёт по одному профилю: резкий сброс, точка сгиба, ровный подъём — и выход на сброс по цвету, а не по таймеру.</p>
+        </div>
+        <figure class="roast-chart reveal">
+          <svg viewBox="0 0 900 400" role="img"
+               aria-label="Кривая обжарки: залив 200 градусов, точка сгиба 90, первый крэк 196, сброс 208">
+            <!-- сетка -->
+            <g class="grid-lines">
+              <line x1="60" y1="40"  x2="870" y2="40"/>
+              <line x1="60" y1="120" x2="870" y2="120"/>
+              <line x1="60" y1="200" x2="870" y2="200"/>
+              <line x1="60" y1="280" x2="870" y2="280"/>
+              <line x1="195" y1="40" x2="195" y2="320"/>
+              <line x1="330" y1="40" x2="330" y2="320"/>
+              <line x1="465" y1="40" x2="465" y2="320"/>
+              <line x1="600" y1="40" x2="600" y2="320"/>
+              <line x1="735" y1="40" x2="735" y2="320"/>
+            </g>
+            <!-- оси -->
+            <line class="axis" x1="60" y1="40" x2="60" y2="320"/>
+            <line class="axis" x1="60" y1="320" x2="870" y2="320"/>
+            <!-- подписи осей -->
+            <g class="ax-lbl" text-anchor="end">
+              <text x="50" y="28">°C</text>
+              <text x="50" y="124">180</text>
+              <text x="50" y="204">140</text>
+              <text x="50" y="284">100</text>
+            </g>
+            <g class="ax-lbl" text-anchor="middle">
+              <text x="60"  y="344">0</text>
+              <text x="195" y="344">2</text>
+              <text x="330" y="344">4</text>
+              <text x="465" y="344">6</text>
+              <text x="600" y="344">8</text>
+              <text x="735" y="344">10</text>
+              <text x="856" y="344">12 мин</text>
+            </g>
+            <!-- кривая -->
+            <path class="curve-line" pathLength="1"
+                  d="M60,80 C95,175 125,275 165,300 C230,312 330,235 420,180 C500,135 590,110 647,96 C700,84 780,70 836,64"/>
+            <!-- точки -->
+            <circle class="curve-dot" style="transition-delay:.35s" cx="60"  cy="80"  r="6"/>
+            <circle class="curve-dot" style="transition-delay:.9s"  cx="165" cy="300" r="6"/>
+            <circle class="curve-dot" style="transition-delay:1.9s" cx="647" cy="96"  r="6"/>
+            <circle class="curve-dot" style="transition-delay:2.55s" cx="836" cy="64" r="6"/>
+            <!-- подписи этапов -->
+            <text class="curve-lbl" style="transition-delay:.5s"  x="74"  y="70"  text-anchor="start">залив · 200 °C</text>
+            <text class="curve-lbl" style="transition-delay:1.1s" x="178" y="318" text-anchor="start">точка сгиба · 90 °C · 1:30</text>
+            <text class="curve-lbl" style="transition-delay:2.1s" x="636" y="140" text-anchor="end">первый крэк · 196 °C · 8:40</text>
+            <text class="curve-lbl" style="transition-delay:2.7s" x="824" y="52"  text-anchor="end">сброс · 208 °C · 11:30</text>
+          </svg>
+          <figcaption class="mono">ростер «Углёк-2» · партия 12 кг · 11:30 минут · развитие вкуса 18%</figcaption>
+        </figure>
+      </div>
+    </section>
+
     <!-- ===== Методы заваривания ===== -->
     <section class="section section-alt" id="methods">
       <div class="container">
@@ -190,6 +258,40 @@
             </ul>
             <p>Помол крупнее сахара, иначе горчит. Сними с огня, как только зашипит, и охлади низ холодной водой.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Конструктор блендов ===== -->
+    <section class="section" id="blend">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="kicker mono">Конструктор</p>
+            <h2>Собери свой бленд</h2>
+          </div>
+          <p class="section-lead">Выбери два-три зерна — смешаем их и обжарим одной партией в ближайший четверг: кислинка для структуры, сладкое для тела.</p>
+        </div>
+        <div class="blend-grid">
+          <div class="blend-origins reveal">
+            <div class="origin-chips" id="origin-chips">
+              <!-- кнопки зерна рендерятся из main.js -->
+            </div>
+          </div>
+          <div class="blend-panel reveal">
+            <div class="blend-slots" id="blend-slots" aria-label="Состав бленда">
+              <button class="blend-slot" type="button" data-k="0"></button>
+              <button class="blend-slot" type="button" data-k="1"></button>
+              <button class="blend-slot" type="button" data-k="2"></button>
+            </div>
+            <p class="blend-name" id="blend-name">твой бленд</p>
+            <p class="blend-notes mono" id="blend-notes">выбери зерна слева — посчитаем вкус и цену</p>
+            <div class="blend-buy">
+              <span class="blend-price mono" id="blend-price">—</span>
+              <button class="btn btn-solid" id="blend-add" type="button" disabled>В корзину</button>
+            </div>
+            <p class="blend-hint mono" id="blend-hint">250 г · смешаем и обжарим одной партией</p>
+          </div>
         </div>
       </div>
     </section>
@@ -313,6 +415,7 @@
         <nav class="footer-nav" aria-label="Навигация в подвале">
           <a href="#catalog">Каталог</a>
           <a href="#methods">Как заваривать</a>
+          <a href="#blend">Бленд</a>
           <a href="#sub">Подписка</a>
           <a href="#about">О нас</a>
         </nav>
