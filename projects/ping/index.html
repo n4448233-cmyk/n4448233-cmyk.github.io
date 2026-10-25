@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ПИНГ — компьютерный клуб 24/7</title>
+  <meta name="description" content="ПИНГ — компьютерный клуб: 60 машин, мониторы 240 Гц, пинг 5 мс. Четыре зала, турниры каждую неделю, бронь без предоплаты. Открыто круглосуточно.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ПИНГ — компьютерный клуб 24/7">
+  <meta property="og:description" content="60 машин, 240 Гц, пинг 5 мс. Лагает только противник.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="cyan">
+
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="cur-dot" id="cur-dot" aria-hidden="true"></div>
+  <div class="cur-ring" id="cur-ring" aria-hidden="true"></div>
+
+  <!-- ===== Шапка ===== -->
+  <header class="topbar" id="top">
+    <div class="container topbar-inner">
+      <a class="logo" href="#top" aria-label="ПИНГ — на главную">
+        <span class="logo-mark mono">П_</span>
+        <span class="logo-word">ПИНГ<em class="logo-cursor" aria-hidden="true"></em></span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
+        <a href="#zones">Залы</a>
+        <a href="#pricing">Тарифы</a>
+        <a href="#book">Бронь</a>
+        <a href="#specs">Железо</a>
+        <a href="#tourney">Турниры</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <button class="theme-btn mono" type="button" id="theme-btn" title="Сменить цвет неона">
+          <span class="theme-dot" aria-hidden="true"></span>
+          <span class="theme-name" id="theme-name">неон: циан</span>
+        </button>
+        <a class="btn btn-solid btn-mini" href="#book">Забронировать</a>
+        <button class="burger" type="button" id="burger" aria-label="Меню" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Приветствие ===== -->
+    <section class="hero" id="hero">
+      <canvas class="hero-fx" id="hero-fx" aria-hidden="true"></canvas>
+      <div class="hero-floor" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-a" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
+
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="kicker mono">// компьютерный клуб · открыто 24/7</p>
+          <h1 class="hero-title">
+            <span class="glitch" data-text="ПИНГ">ПИНГ</span>
+          </h1>
+          <p class="hero-sub">
+            Шестьдесят машин, мониторы 240&nbsp;Гц и пинг 5&nbsp;миллисекунд.
+            Здесь лагает только противник — проверяем каждую ночь.
+          </p>
+          <div class="hero-live mono" role="status">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            сейчас свободно <b class="live-num" id="free-seats">…</b> из 66 мест
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-solid" href="#book">Забронировать место</a>
+            <a class="btn btn-ghost" href="#zones">Что за залы</a>
+          </div>
+          <ul class="hero-stats" aria-label="Клуб в цифрах">
+            <li class="stat">
+              <b class="stat-num mono" data-count="66">0</b>
+              <span class="stat-label mono">игровых станций</span>
+            </li>
+            <li class="stat">
+              <b class="stat-num mono" data-count="240">0</b>
+              <span class="stat-label mono">герц мониторы</span>
+            </li>
+            <li class="stat">
+              <b class="stat-num mono" data-count="5">0</b>
+              <span class="stat-label mono">мс до серверов</span>
+            </li>
+            <li class="stat">
+              <b class="stat-num mono" data-count="24" data-suffix="/7">0</b>
+              <span class="stat-label mono">без выходных</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="live-card">
+            <div class="live-card-head mono">
+              <span>место № 14 · зал «ПРО»</span>
+              <span class="free-tag mono">free</span>
+            </div>
+            <div class="eq" id="eq"></div>
+            <div class="live-card-row mono">
+              <span><b id="live-fps">421</b> fps</span>
+              <span><b>5</b> ms</span>
+              <span><b>61</b>°c gpu</span>
+            </div>
+            <div class="live-card-foot mono">RTX 4070 · i7-13700K · 240 Гц</div>
+          </div>
+          <div class="hero-ring-wrap">
+            <svg class="hero-ring" viewBox="0 0 150 150">
+              <defs>
+                <path id="ring-path" d="M75,75 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"/>
+              </defs>
+              <g class="ring-rotor">
+                <text class="ring-text mono">
+                  <textPath href="#ring-path">пинг 5 мс · пинг 5 мс · пинг 5 мс ·</textPath>
+                </text>
+              </g>
+              <circle cx="75" cy="75" r="40" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 6" opacity=".5"/>
+              <text x="75" y="84" text-anchor="middle" class="ring-num mono">5мс</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Бегущая строка ===== -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track mono">
+        <span>CS2 · DOTA 2 · VALORANT · FORTNITE · PUBG · APEX · ROCKET LEAGUE · MINECRAFT · WARZONE · ROBLOX · TEKKEN 8 · FIFA 25 · </span>
+        <span>CS2 · DOTA 2 · VALORANT · FORTNITE · PUBG · APEX · ROCKET LEAGUE · MINECRAFT · WARZONE · ROBLOX · TEKKEN 8 · FIFA 25 · </span>
+        <span>CS2 · DOTA 2 · VALORANT · FORTNITE · PUBG · APEX · ROCKET LEAGUE · MINECRAFT · WARZONE · ROBLOX · TEKKEN 8 · FIFA 25 · </span>
+      </div>
+    </div>
+
+    <!-- ===== Залы ===== -->
+    <section class="zones sec" id="zones">
+      <div class="container">
+        <p class="kicker mono reveal">// залы</p>
+        <h2 class="sec-title reveal">Четыре зала под любую катку</h2>
+
+        <div class="zones-grid">
+          <article class="zone-card tilt reveal" data-zone="std">
+            <div class="zone-head">
+              <h3 class="zone-name">Стандарт</h3>
+              <span class="zone-seats mono">32 места</span>
+            </div>
+            <ul class="zone-specs mono">
+              <li>RTX 4060 8 ГБ</li>
+              <li>i5-13400F · 16 ГБ</li>
+              <li>мониторы 165 Гц</li>
+            </ul>
+            <p class="zone-blurb">Катки с друзьями, домик в Майне и первый ранг в этом сезоне.</p>
+            <div class="zone-foot">
+              <span class="zone-price mono">120 ₽<i>/час</i></span>
+              <a class="zone-link mono" href="#book">забронировать →</a>
+            </div>
+          </article>
+
+          <article class="zone-card tilt hit reveal" data-zone="pro">
+            <span class="zone-badge mono">хит</span>
+            <div class="zone-head">
+              <h3 class="zone-name">Про</h3>
+              <span class="zone-seats mono">20 мест</span>
+            </div>
+            <ul class="zone-specs mono">
+              <li>RTX 4070 12 ГБ</li>
+              <li>i7-13700K · 32 ГБ</li>
+              <li>мониторы 240 Гц</li>
+            </ul>
+            <p class="zone-blurb">Ранкед-график: апаешь ранг, а не пинг. Основа клуба.</p>
+            <div class="zone-foot">
+              <span class="zone-price mono">180 ₽<i>/час</i></span>
+              <a class="zone-link mono" href="#book">забронировать →</a>
+            </div>
+          </article>
+
+          <article class="zone-card tilt reveal" data-zone="vip">
+            <div class="zone-head">
+              <h3 class="zone-name">VIP</h3>
+              <span class="zone-seats mono">8 мест</span>
+            </div>
+            <ul class="zone-specs mono">
+              <li>RTX 4080 16 ГБ</li>
+              <li>360 Гц + диван</li>
+              <li>PS5 в комнате</li>
+            </ul>
+            <p class="zone-blurb">Закрытая комната для команды: стратегию можно кричать.</p>
+            <div class="zone-foot">
+              <span class="zone-price mono">350 ₽<i>/час</i></span>
+              <a class="zone-link mono" href="#book">забронировать →</a>
+            </div>
+          </article>
+
+          <article class="zone-card tilt reveal" data-zone="con">
+            <div class="zone-head">
+              <h3 class="zone-name">Консоли</h3>
+              <span class="zone-seats mono">6 мест</span>
+            </div>
+            <ul class="zone-specs mono">
+              <li>PS5 × 4 · Xbox X</li>
+              <li>OLED 4K 120 Гц</li>
+              <li>пады и кресла-мешки</li>
+            </ul>
+            <p class="zone-blurb">Файтинги, FIFA и «ещё одну катку» до утра.</p>
+            <div class="zone-foot">
+              <span class="zone-price mono">150 ₽<i>/час</i></span>
+              <a class="zone-link mono" href="#book">забронировать →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Тарифы ===== -->
+    <section class="pricing sec" id="pricing">
+      <div class="container">
+        <p class="kicker mono reveal">// тарифы</p>
+        <h2 class="sec-title reveal">Плати за игру, а не за кресло</h2>
+
+        <div class="day-tabs mono reveal" role="tablist" aria-label="Время суток">
+          <button class="day-tab is-active" type="button" data-part="morning" role="tab" aria-selected="true">утро <i>08–16</i></button>
+          <button class="day-tab" type="button" data-part="evening" role="tab" aria-selected="false">вечер <i>16–23</i></button>
+          <button class="day-tab" type="button" data-part="night" role="tab" aria-selected="false">ночь <i>23–08</i></button>
+        </div>
+
+        <div class="price-grid">
+          <article class="price-card reveal">
+            <h3 class="price-name mono">почасовой</h3>
+            <p class="price-value mono"><b class="p-num" data-key="hourly">120</b><i>₽ / час</i></p>
+            <ul class="price-feats">
+              <li>любой зал, кроме VIP</li>
+              <li>чай, кофе, печеньки — бесплатно</li>
+              <li>перерыв 15 минут раз в час</li>
+            </ul>
+            <a class="btn btn-ghost btn-wide" href="#book">Прийти и играть</a>
+          </article>
+
+          <article class="price-card reveal">
+            <h3 class="price-name mono">пятёрочка</h3>
+            <p class="price-value mono"><b class="p-num" data-key="five">480</b><i>₽ / 5 часов</i></p>
+            <ul class="price-feats">
+              <li>минус 20% от почасовой</li>
+              <li>часы не сгорают 30 дней</li>
+              <li>можно играть вдвоём по очереди</li>
+            </ul>
+            <a class="btn btn-ghost btn-wide" href="#book">Взять пятёрку</a>
+          </article>
+
+          <article class="price-card price-hit reveal">
+            <span class="zone-badge mono">выбор игроков</span>
+            <h3 class="price-name mono">ночной марафон</h3>
+            <p class="price-value mono"><b class="p-num" data-key="marafon">890</b><i>₽ / 23:00→10:00</i></p>
+            <ul class="price-feats">
+              <li>11 часов ночи в зале «Про»</li>
+              <li>энергетик за наш счёт</li>
+              <li>плед по запросу, без шуток</li>
+            </ul>
+            <a class="btn btn-solid btn-wide" href="#book">Забрать ночь</a>
+          </article>
+        </div>
+
+        <p class="price-note mono reveal">* VIP и консоли — плюс 50 ₽ к часу. Студентам утром −10% по зачётке.</p>
+      </div>
+    </section>
+
+    <!-- ===== Бронирование ===== -->
+    <section class="booking sec" id="book">
+      <div class="container">
+        <p class="kicker mono reveal">// бронь</p>
+        <h2 class="sec-title reveal">Забери место, пока его не занял кто-то быстрее</h2>
+
+        <div class="book-grid">
+          <div class="book-controls reveal">
+            <div class="book-panel">
+              <p class="ctrl-label mono">зал</p>
+              <div class="zone-pills mono" id="zone-pills" role="group" aria-label="Выбор зала">
+                <button class="zone-pill is-active" type="button" data-zone="std">Стандарт · 120 ₽</button>
+                <button class="zone-pill" type="button" data-zone="pro">Про · 180 ₽</button>
+                <button class="zone-pill" type="button" data-zone="vip">VIP · 350 ₽</button>
+              </div>
+
+              <p class="ctrl-label mono">сколько часов</p>
+              <div class="hours-box">
+                <input class="hours-range" id="hours-range" type="range" min="1" max="12" step="1" value="3"
+                       aria-label="Количество часов">
+                <b class="hours-value mono" id="hours-value">3 ч</b>
+              </div>
+
+              <div class="book-summary mono" id="book-summary" aria-live="polite">
+                <span class="sum-line">выбери место на карте →</span>
+              </div>
+
+              <button class="btn btn-solid btn-wide" type="button" id="book-btn" disabled>Забронировать</button>
+              <p class="book-note mono">без предоплаты — просто покажи код на ресепшене</p>
+            </div>
+          </div>
+
+          <div class="book-map reveal">
+            <div class="seat-panel">
+              <div class="seat-panel-head mono">
+                <span id="seat-zone-name">зал «Стандарт»</span>
+                <span class="seat-hint mono" id="seat-hint">свободно 21 из 32</span>
+              </div>
+              <div class="screen-bar mono" aria-hidden="true">— экран —</div>
+              <div class="seats" id="seats"></div>
+              <div class="seat-legend mono" aria-hidden="true">
+                <span><i class="lg lg-free"></i>свободно</span>
+                <span><i class="lg lg-occ"></i>занято</span>
+                <span><i class="lg lg-mine"></i>твоё</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Железо ===== -->
+    <section class="specs sec" id="specs">
+      <div class="container">
+        <p class="kicker mono reveal">// железо</p>
+        <h2 class="sec-title reveal">Тянет всё. И твой стрим тоже</h2>
+
+        <div class="specs-grid">
+          <div class="cfg-card reveal">
+            <p class="cfg-title mono">// конфиг зала «Про»</p>
+            <ul class="cfg-list mono">
+              <li><span>CPU</span><b>Core i7-13700K</b></li>
+              <li><span>GPU</span><b>GeForce RTX 4070</b></li>
+              <li><span>RAM</span><b>32 ГБ DDR5 6000</b></li>
+              <li><span>SSD</span><b>2 ТБ NVMe Gen4</b></li>
+              <li><span>NET</span><b>1 Гбит/с · пинг 5 мс</b></li>
+              <li><span>MON</span><b>24.5″ 240 Гц Fast IPS</b></li>
+            </ul>
+          </div>
+
+          <div class="fps-card reveal">
+            <p class="cfg-title mono">// средний fps за час игры</p>
+            <div class="fps-list">
+              <div class="fps-row" data-fps="421">
+                <span class="fps-name mono">CS 2</span>
+                <span class="fps-bar"><i></i></span>
+                <b class="fps-val mono">421</b>
+              </div>
+              <div class="fps-row" data-fps="468">
+                <span class="fps-name mono">VALORANT</span>
+                <span class="fps-bar"><i></i></span>
+                <b class="fps-val mono">468</b>
+              </div>
+              <div class="fps-row" data-fps="289">
+                <span class="fps-name mono">FORTNITE</span>
+                <span class="fps-bar"><i></i></span>
+                <b class="fps-val mono">289</b>
+              </div>
+              <div class="fps-row" data-fps="275">
+                <span class="fps-name mono">APEX</span>
+                <span class="fps-bar"><i></i></span>
+                <b class="fps-val mono">275</b>
+              </div>
+              <div class="fps-row" data-fps="144">
+                <span class="fps-name mono">CYBERPUNK <i>rt on</i></span>
+                <span class="fps-bar"><i></i></span>
+                <b class="fps-val mono">144</b>
+              </div>
+            </div>
+            <p class="cfg-note mono">замеряли целый час, честно. мониторы 240 Гц — это не маркетинг</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Турниры ===== -->
+    <section class="tourney sec" id="tourney">
+      <div class="container">
+        <p class="kicker mono reveal">// турниры</p>
+        <h2 class="sec-title reveal">Каждую неделю — за призовые</h2>
+
+        <div class="cd-chip mono reveal" role="timer">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          до «SATURDAY NIGHT CS2»: <b id="cd-value">…</b>
+        </div>
+
+        <div class="tourney-grid">
+          <article class="t-card reveal">
+            <div class="t-head">
+              <span class="t-game mono">CS2 · 5×5</span>
+              <span class="t-status t-live mono">live</span>
+            </div>
+            <h3 class="t-name">Saturday Night</h3>
+            <ul class="t-meta mono">
+              <li><span>когда</span><b>суббота · 19:00</b></li>
+              <li><span>приз</span><b>5 000 ₽</b></li>
+              <li><span>слоты</span><b>4 из 10</b></li>
+            </ul>
+            <button class="btn btn-ghost btn-wide t-join" type="button" data-tourney="Saturday Night CS2">Записаться</button>
+          </article>
+
+          <article class="t-card reveal">
+            <div class="t-head">
+              <span class="t-game mono">DOTA 2 · 2×2</span>
+              <span class="t-status t-open mono">регистрация открыта</span>
+            </div>
+            <h3 class="t-name">Sunday Slark Cup</h3>
+            <ul class="t-meta mono">
+              <li><span>когда</span><b>воскресенье · 16:00</b></li>
+              <li><span>приз</span><b>3 000 ₽</b></li>
+              <li><span>слоты</span><b>7 из 12</b></li>
+            </ul>
+            <button class="btn btn-ghost btn-wide t-join" type="button" data-tourney="Dota 2 Sunday">Записаться</button>
+          </article>
+
+          <article class="t-card reveal">
+            <div class="t-head">
+              <span class="t-game mono">VALORANT · 5×5</span>
+              <span class="t-status t-open mono">регистрация открыта</span>
+            </div>
+            <h3 class="t-name">Friday Flashpoint</h3>
+            <ul class="t-meta mono">
+              <li><span>когда</span><b>пятница · 21:00</b></li>
+              <li><span>приз</span><b>4 000 ₽</b></li>
+              <li><span>слоты</span><b>12 из 20</b></li>
+            </ul>
+            <button class="btn btn-ghost btn-wide t-join" type="button" data-tourney="Valorant Friday">Записаться</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Контакты / футер ===== -->
+    <section class="contacts sec" id="contacts">
+      <div class="container">
+        <div class="contacts-grid">
+          <div class="contacts-copy reveal">
+            <p class="kicker mono">// контакты</p>
+            <h2 class="sec-title">Заходи. Мы не закрываемся</h2>
+            <p class="contacts-text">
+              Утром — тихо и дёшево, вечером — шумно и эпично, ночью — марафоны.
+              Приходи один или тащи весь дискорд.
+            </p>
+          </div>
+          <ul class="contacts-list reveal">
+            <li class="c-row mono"><span>адрес</span><b>ул. Пиксельная, 5, 2 этаж</b></li>
+            <li class="c-row mono"><span>часы</span><b>пн–вс · 00:00–24:00</b></li>
+            <li class="c-row mono"><span>телефон</span><b><a href="tel:+79005550105">+7 900 555-01-05</a></b></li>
+            <li class="c-row mono"><span>telegram</span><b><a href="#" rel="noopener">@ping_club</a></b></li>
+            <li class="c-row mono"><span>discord</span><b><a href="#" rel="noopener">ping.club</a></b></li>
+          </ul>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <div class="container footer-inner mono">
+          <span>© 2026 ПИНГ — компьютерный клуб</span>
+          <span class="footer-pong" aria-hidden="true"></span>
+          <span>собрано на 240 Гц без единого лага</span>
+        </div>
+      </footer>
+    </section>
+
+  </main>
+
+  <div class="toast mono" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>

@@ -45,6 +45,23 @@ const CATEGORIES = ["Все", "Сайты", "Плагины", "Моды", "Иг�
 
 const PROJECTS = [
   {
+    title: "«ПИНГ» — сайт компьютерного клуба",
+    description:
+      "Тёмный неоновый лендинг для киберклуба: живая карта мест с бронированием и кодом брони, тарифы с переключателем времени суток, анимированные бенчмарки FPS, обратный отсчёт до турнира, глитч-заголовок, частицы на canvas и три неоновые темы по кнопке.",
+    category: "Сайты",
+    tags: ["HTML", "CSS", "JavaScript", "Canvas", "анимации", "адаптив"],
+    images: [
+      "img/projects/ping-1.png",
+      "img/projects/ping-2.png",
+      "img/projects/ping-3.png",
+      "img/projects/ping-4.png",
+      "img/projects/ping-5.png",
+    ],
+    demo: "projects/ping/index.html",
+    source: "",
+    featured: true,
+  },
+  {
     title: "«Углёк» — сайт кофейной обжарки",
     description:
       "Лендинг для локальной обжарки: каталог с фильтром по обжарке, конструктор блендов, живой счётчик до ближайшей обжарки, анимированный график профиля и подписка. Настоящие фотографии пачек и зерна (Unsplash / Wikimedia Commons), адаптив от телефона до десктопа.",
@@ -59,7 +76,6 @@ const PROJECTS = [
     ],
     demo: "projects/uglek/index.html",
     source: "",
-    featured: true,
   },
   {
     title: "«Плакатня» — генератор постеров",
