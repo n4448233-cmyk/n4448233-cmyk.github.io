@@ -72,7 +72,7 @@ const PROJECTS = [
       "img/projects/customground-2.png",
     ],
     demo: "projects/customground/index.html",
-    source: "",
+    source: "projects/customground/CustomBackground.plugin.js",
   },
   {
     title: "«Углёк» — сайт кофейной обжарки",
