@@ -68,7 +68,7 @@ const PROJECTS = [
     category: "Плагины",
     tags: ["JavaScript", "BetterDiscord API", "CSS", "Electron", "FileReader"],
     images: [
-      "img/projects/customground-1.jpg",
+      "img/projects/customground-1.png",
       "img/projects/customground-2.png",
     ],
     demo: "projects/customground/index.html",
