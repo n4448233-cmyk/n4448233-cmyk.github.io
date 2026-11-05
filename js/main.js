@@ -443,6 +443,32 @@
     }
   }
 
+  /* ---------- Фон зоны проектов: LightRays (WebGL-лучи) ---------- */
+
+  var projectsRays = document.querySelector(".projects-rays");
+  if (projectsRays && typeof window.LightRays === "function") {
+    try {
+      window.LightRays(projectsRays, {
+        raysOrigin: "top-center",
+        raysColor: "#a855f7",
+        raysSpeed: 1,
+        lightSpread: 0.5,
+        rayLength: 2,
+        glow: 0.6,
+        haze: 0.25,
+        followMouse: true,
+        mouseInfluence: 0,
+        raySharpness: 0.2,
+        atmosphere: 0.95,
+        intensity: 1.2,
+        saturation: 0.75,
+        cursorShadow: false
+      });
+    } catch (e) {
+      /* без лучей секция остаётся с обычным фоном */
+    }
+  }
+
   /* ---------- Появление карточек при прокрутке ---------- */
 
   if ("IntersectionObserver" in window) {
