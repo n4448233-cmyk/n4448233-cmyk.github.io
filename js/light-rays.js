@@ -341,6 +341,12 @@ void main() {
       var pageVisible = document.visibilityState !== "hidden";
       var lost = false;
 
+      // Пересоздание backing store очищает канвас — это видно как мигание.
+      // Поэтому мелкие изменения высоты (панель описания под колодой меняет
+      // контент) не трогают буфер: картинка просто мягко растягивается.
+      var lastCssWidth = 0;
+      var lastCssHeight = 0;
+
       var resize = function () {
         var s = settings;
         var rect = container.getBoundingClientRect();
@@ -356,13 +362,21 @@ void main() {
         );
         var width = Math.max(1, Math.round(cssWidth * ratio));
         var height = Math.max(1, Math.round(cssHeight * ratio));
-        if (canvas.width !== width || canvas.height !== height) {
-          canvas.width = width;
-          canvas.height = height;
+
+        var widthChanged = Math.abs(cssWidth - lastCssWidth) > 2;
+        var heightJump = Math.abs(cssHeight - lastCssHeight) > 120;
+        if (!lastCssWidth || widthChanged || heightJump) {
+          if (canvas.width !== width || canvas.height !== height) {
+            canvas.width = width;
+            canvas.height = height;
+          }
+          lastCssWidth = cssWidth;
+          lastCssHeight = cssHeight;
         }
+
         size.width = cssWidth;
         size.height = cssHeight;
-        size.ratio = width / cssWidth;
+        size.ratio = canvas.width / cssWidth;
       };
 
       var frame = function (now) {
