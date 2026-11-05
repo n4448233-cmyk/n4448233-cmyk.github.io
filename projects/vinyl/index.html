@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>33⅓ — магазин пластинок и бар прослушивания</title>
+  <meta name="description" content="33⅓ — магазин виниловых пластинок и бар прослушивания на Покровке. Свежий привоз по четвергам, скуп коллекций, сеансы на ламповом тракте.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="33⅓ — магазин пластинок и бар прослушивания">
+  <meta property="og:description" content="Три скорости, тысяча историй. Привоз по четвергам, бар на 12 мест, скуп и оценка коллекций.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+  <div class="noise" aria-hidden="true"></div>
+  <canvas id="spark-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="33⅓ — на главную">
+        <svg class="logo-mark" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="26" fill="#171B26"/>
+          <circle cx="32" cy="32" r="21" fill="none" stroke="#242A38" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="16" fill="none" stroke="#242A38" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="10" fill="#D8F34E"/>
+          <circle cx="32" cy="32" r="2.4" fill="#0B0D12"/>
+        </svg>
+        <span class="logo-word">33<sup>1</sup>/<sub>3</sub></span>
+      </a>
+
+      <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+        <a href="#fresh">Привоз</a>
+        <a href="#genres">Жанры</a>
+        <a href="#bar">Бар</a>
+        <a href="#about">О нас</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <a class="btn btn-star btn-sm header-cta" href="#contacts">Записаться</a>
+      <button class="burger" id="nav-burger" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ ХИРО — пластинка с заголовком на лейбле ============ -->
+  <section class="hero" id="hero">
+    <canvas id="iridescence" aria-hidden="true"></canvas>
+    <div class="hero-fade" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <p class="kicker kicker-center reveal">Москва · Покровка, 17 · магазин пластинок и бар прослушивания</p>
+
+      <div class="disc-stage">
+        <canvas id="vinyl-disc" aria-hidden="true"></canvas>
+        <h1 class="hero-title" id="pressure-title" aria-label="33 и одна треть">
+          <span class="px">3</span><span class="px">3</span><span class="px frac"><span class="num">1</span><span class="bar"></span><span class="den">3</span></span>
+        </h1>
+        <p class="hero-sub reveal">Три скорости, тысяча историй. Заходите послушать, уходите с пластинкой,
+          а по вечерам мы включаем бар на двенадцать мест — и ставим то, что принесли вы.</p>
+        <div class="hero-cta reveal">
+          <a href="#fresh" class="btn btn-star">Смотреть привоз</a>
+          <a href="#bar" class="btn btn-ghost">Бар прослушивания</a>
+        </div>
+      </div>
+    </div>
+
+    <a class="scroll-hint" href="#fresh" aria-label="Листайте вниз">
+      <svg width="18" height="26" viewBox="0 0 18 26" fill="none" aria-hidden="true">
+        <path d="M9 1v20M3 16l6 6 6-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- ============ 01 СВЕЖИЙ ПРИВОЗ ============ -->
+  <section class="section" id="fresh">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="sec-num">A1</span>
+        <div>
+          <h2>Свежий привоз</h2>
+          <p class="sec-note">каталог обновляется по четвергам · цены за состояние VG+</p>
+        </div>
+      </div>
+
+      <div class="dock-zone reveal">
+        <div class="dock" id="genre-dock" role="toolbar" aria-label="Жанры">
+          <button class="dock-item is-active" data-genre="all">Все</button>
+          <button class="dock-item" data-genre="rock">Рок</button>
+          <button class="dock-item" data-genre="jazz">Джаз</button>
+          <button class="dock-item" data-genre="electronic">Электроника</button>
+          <button class="dock-item" data-genre="disco">Диско</button>
+          <button class="dock-item" data-genre="classic">Классика</button>
+          <button class="dock-item" data-genre="hiphop">Хип-хоп</button>
+          <button class="dock-item" data-genre="metal">Метал</button>
+        </div>
+      </div>
+
+      <div class="chips reveal" id="genre-chips">
+        <button class="chip is-active" data-genre="all">Все</button>
+        <button class="chip" data-genre="rock">Рок</button>
+        <button class="chip" data-genre="jazz">Джаз</button>
+        <button class="chip" data-genre="electronic">Электроника</button>
+        <button class="chip" data-genre="disco">Диско</button>
+        <button class="chip" data-genre="classic">Классика</button>
+        <button class="chip" data-genre="hiphop">Хип-хоп</button>
+        <button class="chip" data-genre="metal">Метал</button>
+      </div>
+
+      <div class="cards" id="cards"></div>
+      <p class="cards-empty" id="cards-empty" hidden>В этой стопке пока пусто — заглядывайте в четверг.</p>
+    </div>
+  </section>
+
+  <!-- ============ 02 ЖАНРЫ ============ -->
+  <section class="section" id="genres">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="sec-num">A2</span>
+        <div>
+          <h2>С чего начнём</h2>
+          <p class="sec-note">четыре полки, с которых мы советуем начать</p>
+        </div>
+      </div>
+
+      <div class="genre-grid">
+        <article class="spot genre-card reveal" data-genre="jazz" tabindex="0" role="button" aria-label="Показать джаз в привозе">
+          <img src="img/genres/genre-jazz.jpg" alt="Саксофонистка на сцене" loading="lazy">
+          <div class="genre-info">
+            <h3>Джаз</h3>
+            <p>Хард-боп, свинг и всё, что играли в подвалах пятьдесят лет назад.</p>
+            <span class="genre-count" data-count-genre="jazz"></span>
+          </div>
+        </article>
+
+        <article class="spot genre-card reveal" data-genre="rock" tabindex="0" role="button" aria-label="Показать рок в привозе">
+          <img src="img/genres/genre-rock.jpg" alt="Гитарист на концерте" loading="lazy">
+          <div class="genre-info">
+            <h3>Рок</h3>
+            <p>От британского вторжения до шумного нойза с окраин.</p>
+            <span class="genre-count" data-count-genre="rock"></span>
+          </div>
+        </article>
+
+        <article class="spot genre-card reveal" data-genre="electronic" tabindex="0" role="button" aria-label="Показать электронику в привозе">
+          <img src="img/genres/genre-electronic.jpg" alt="Модульный синтезатор Moog 1973 года" loading="lazy">
+          <div class="genre-info">
+            <h3>Электроника</h3>
+            <p>Синты, дрон и космос: модули, ленты и первые драм-машины.</p>
+            <span class="genre-count" data-count-genre="electronic"></span>
+          </div>
+        </article>
+
+        <article class="spot genre-card reveal" data-genre="hiphop" tabindex="0" role="button" aria-label="Показать хип-хоп в привозе">
+          <img src="img/genres/genre-club.jpg" alt="Диджейская стойка с двумя вертушками" loading="lazy">
+          <div class="genre-info">
+            <h3>Хип-хоп</h3>
+            <p>Сэмплы, брейки и двенадцатидюймовые синглы для вертушек.</p>
+            <span class="genre-count" data-count-genre="hiphop"></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ СТАТЫ ============ -->
+  <section class="stats" id="stats" aria-label="Магазин в цифрах">
+    <canvas id="dot-grid" aria-hidden="true"></canvas>
+    <div class="container stats-row">
+      <div class="stat reveal">
+        <span class="stat-num" data-count="3800">0</span>
+        <span class="stat-label">пластинок в наличии</span>
+      </div>
+      <div class="stat reveal">
+        <span class="stat-num" data-count="8">0</span>
+        <span class="stat-label">лет на Покровке</span>
+      </div>
+      <div class="stat reveal">
+        <span class="stat-num" data-count="120">0</span>
+        <span class="stat-label">сеансов в баре каждый месяц</span>
+      </div>
+      <div class="stat reveal">
+        <span class="stat-num">33⅓</span>
+        <span class="stat-label">оборотов в минуту</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 БАР ============ -->
+  <section class="section" id="bar">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="sec-num">B1</span>
+        <div>
+          <h2>Бар прослушивания</h2>
+          <p class="sec-note">двенадцать мест, ламповый тракт, пластинки приносят гости</p>
+        </div>
+      </div>
+
+      <div class="bar-grid">
+        <div class="bar-photos">
+          <figure class="tilt bar-photo-main reveal">
+            <img src="img/misc/listening.jpg" alt="Гостья бара слушает пластинку в наушниках" loading="lazy">
+          </figure>
+          <figure class="tilt bar-photo-strip reveal">
+            <img src="img/misc/needle-macro.jpg" alt="Играющая игла на дорожке пластинки, макро" loading="lazy">
+          </figure>
+        </div>
+
+        <div class="bar-text">
+          <p class="lead reveal">Каждый вечер мы опускаем иглу на чьё-то «самое главное». Можно прийти со своей
+            пластинкой — поставим, если она переживёт дорогу.</p>
+          <ul class="bar-sched reveal">
+            <li><span class="sched-day">пт · 19:00</span><span>Джазовый час — ставит Артём из отдела скупа</span></li>
+            <li><span class="sched-day">сб · 20:00</span><span>«Принеси свою» — открытый микрофон для пластинок</span></li>
+            <li><span class="sched-day">вс · 17:00</span><span>Тихий сеанс — классика на большой громкости</span></li>
+          </ul>
+          <div class="reveal">
+            <a class="btn btn-star" href="#contacts">Записаться на сеанс</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 О МАГАЗИНЕ ============ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="sec-num">B2</span>
+        <div>
+          <h2>О магазине</h2>
+          <p class="sec-note">восемь лет слушаем, оцениваем и продаём</p>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="lead reveal">Всё началось с коробки пластинок, купленной «на сдачу» на Баррикадной.
+            Теперь их у нас три тысячи восемьсот — и каждая прошла через стол с лупой и иглой.</p>
+          <ul class="about-facts reveal">
+            <li><strong>Скуп коллекций.</strong> Приезжаем к вам или принимаем в магазине — платим в тот же день.</li>
+            <li><strong>Оценка при вас.</strong> Состояние по Goldstone, проверка на вертушке, без «перезвоним позже».</li>
+            <li><strong>Обмен и кредит.</strong> Старая стопка — новый привоз: зачтём до 70% стоимости.</li>
+            <li><strong>Чистка и реставрация.</strong> Моющая машина VPI и новый конверт для каждой из «наших».</li>
+          </ul>
+        </div>
+        <div class="about-photos">
+          <figure class="tilt about-photo-a reveal">
+            <img src="img/misc/store-shelves.jpg" alt="Стеллажи с пластинками в магазине" loading="lazy">
+          </figure>
+          <figure class="tilt about-photo-b reveal">
+            <img src="img/misc/tonearm.jpg" alt="Тонарм проигрывателя крупным планом" loading="lazy">
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 КОНТАКТЫ ============ -->
+  <section class="section" id="contacts">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="sec-num">B3</span>
+        <div>
+          <h2>Контакты</h2>
+          <p class="sec-note">заходите без записи, бар — по списку</p>
+        </div>
+      </div>
+
+      <div class="contacts-grid">
+        <div class="contacts-info reveal">
+          <div class="contact-row">
+            <span class="contact-key">Адрес</span>
+            <span class="contact-val">Москва, ул. Покровка, 17, вход со двора</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-key">Часы</span>
+            <span class="contact-val">пн–пт 12:00–22:00 · сб–вс 11:00–23:00</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-key">Телефон</span>
+            <span class="contact-val"><a href="tel:+74950000000">+7 (495) 000-00-00</a></span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-key">Пишут</span>
+            <span class="contact-val socials">
+              <a class="magnet" href="#" aria-label="Телеграм">ТГ</a>
+              <a class="magnet" href="#" aria-label="Вконтакте">ВК</a>
+              <a class="magnet" href="#" aria-label="Ютуб">YT</a>
+            </span>
+          </div>
+        </div>
+
+        <form class="book-form reveal" id="book-form" novalidate>
+          <h3>Запись в бар</h3>
+          <p class="form-note">оставьте контакты — подтвердим место в тот же день</p>
+          <label>
+            <span>Имя</span>
+            <input type="text" name="name" placeholder="Как к вам обращаться" required>
+          </label>
+          <label>
+            <span>Телеграм или телефон</span>
+            <input type="text" name="contact" placeholder="@username или +7…" required>
+          </label>
+          <label>
+            <span>Когда хотите прийти</span>
+            <input type="text" name="when" placeholder="например, суббота, вечер">
+          </label>
+          <button type="submit" class="btn btn-star btn-wide">Отправить заявку</button>
+          <p class="form-done" hidden>Заявка ушла — подтвердим место в тот же день. до встречи!</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ «Сейчас играет» — живой треклист ============ -->
+  <aside class="now-playing" id="now-playing" aria-hidden="true">
+    <span class="np-disc" aria-hidden="true"></span>
+    <span class="np-meta">
+      <span class="np-code" id="np-code">A0</span>
+      <span class="np-track" id="np-track">33⅓ — вступление</span>
+    </span>
+    <span class="np-progress" aria-hidden="true"><span class="np-bar" id="np-bar"></span></span>
+    <button class="np-toggle" id="np-toggle" aria-label="Поставить на паузу" title="Пауза">
+      <svg class="np-ic-pause" width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+      <svg class="np-ic-play" width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2.5 1.3v9.4c0 .8.9 1.3 1.6.9l7-4.7c.6-.4.6-1.4 0-1.8l-7-4.7c-.7-.4-1.6.1-1.6.9z"/></svg>
+    </button>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="footer-logo">33<sup>1</sup>/<sub>3</sub></span>
+      <nav class="footer-nav" aria-label="Навигация в подвале">
+        <a href="#fresh">Привоз</a>
+        <a href="#genres">Жанры</a>
+        <a href="#bar">Бар</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <p class="footer-note">Фотографии — Wikimedia Commons · <span id="year"></span> · сторона B закончилась, переверните пластинку</p>
+    </div>
+  </footer>
+
+  <!-- ============ 3D-просмотрщик пластинки ============ -->
+  <div class="vinyl-viewer" id="vinyl-viewer" hidden>
+    <div class="vv-stage" id="vv-stage"></div>
+    <p class="vv-hint" id="vv-hint"></p>
+    <p class="vv-loading" id="vv-loading">Достаём пластинку с полки…</p>
+    <div class="vv-ui">
+      <button id="vv-pull" class="vv-main" type="button">Достать диск</button>
+      <button id="vv-spin" class="is-on" type="button">Крутится 33⅓</button>
+      <button id="vv-reset" type="button">Сбросить вид</button>
+    </div>
+    <button class="vv-close" id="vv-close" type="button" aria-label="Закрыть просмотр">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <script src="js/record-factory.js"></script>
+  <script src="js/iridescence.js"></script>
+  <script src="js/vinyl-disc.js"></script>
+  <script src="js/text-pressure.js"></script>
+  <script src="js/reveal.js"></script>
+  <script src="js/tilted-cards.js"></script>
+  <script src="js/spotlight.js"></script>
+  <script src="js/dock.js"></script>
+  <script src="js/count-up.js"></script>
+  <script src="js/click-spark.js"></script>
+  <script src="js/magnet.js"></script>
+  <script src="js/dot-grid.js"></script>
+  <script src="js/vinyl-viewer.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
