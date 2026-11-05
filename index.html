@@ -84,8 +84,15 @@
         <div class="projects-tabs mono" id="projects-tabs" role="tablist" aria-label="Категории проектов">
           <!-- вкладки рендерятся из js/data.js -->
         </div>
-        <div class="projects-grid" id="projects-grid">
-          <!-- карточки рендерятся из js/data.js -->
+        <div class="projects-deck" id="projects-deck">
+          <!-- колода карточек рендерится из js/data.js + js/card-swap.js -->
+        </div>
+        <div class="project-spot" id="project-spot">
+          <!-- описание карточки, которая сейчас впереди -->
+        </div>
+        <div class="projects-empty" id="projects-empty" hidden>
+          <span class="mono">скоро</span>
+          <p>В этом разделе пока пусто — работы готовятся.</p>
         </div>
       </div>
     </section>
@@ -168,6 +175,7 @@
 
   <script src="js/data.js"></script>
   <script src="js/ghost-fibers.js"></script>
+  <script src="js/card-swap.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

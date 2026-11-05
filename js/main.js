@@ -13,18 +13,6 @@
     el.textContent = PROFILE.name;
   });
 
-  /* ---------- Утилиты ---------- */
-
-  function escapeHtml(text) {
-    var div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  function escapeAttr(text) {
-    return escapeHtml(text).replace(/"/g, "&quot;");
-  }
-
   // Одинаковая круглая кнопка со стрелкой для галереи и лайтбокса
   function arrowButton(direction, label) {
     var d = direction === "prev" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7";
@@ -140,200 +128,155 @@
 
     return { open: open };
   })();
-
   /* ============================================================
-     КАРТОЧКИ ПРОЕКТОВ
+     ПРОЕКТЫ: колода CardSwap + панель передней карточки.
+     Вкладки пересобирают колоду из отфильтрованных проектов.
      ============================================================ */
 
-  // Обложка: галерея скриншотов, если они есть; иначе заглушка с номером
-  function buildCover(project, number) {
-    var images = project.images || [];
-
-    if (!images.length) {
-      return (
-        '<div class="project-cover" aria-hidden="true">' +
-        '<span class="cover-tag">Проект</span>' +
-        '<span class="cover-num">' + number + "</span>" +
-        "</div>"
-      );
-    }
-
-    var slides = images
-      .map(function (src, i) {
-        return (
-          '<button class="cover-slide" type="button" data-slide-index="' + i + '"' +
-          ' aria-label="Открыть скриншот ' + (i + 1) + ' в большом просмотре">' +
-          '<img src="' + escapeAttr(src) + '" alt="' +
-          escapeAttr(project.title + " — скриншот " + (i + 1)) + '" loading="lazy">' +
-          "</button>"
-        );
-      })
-      .join("");
-
-    var dots = images
-      .map(function (_, i) {
-        return (
-          '<button class="gallery-dot' + (i === 0 ? " is-active" : "") +
-          '" type="button" data-goto="' + i + '" aria-label="Скриншот ' + (i + 1) + '"></button>'
-        );
-      })
-      .join("");
-
-    var multi = images.length > 1;
-    var controls = multi
-      ? arrowButton("prev", "Предыдущий скриншот") +
-        arrowButton("next", "Следующий скриншот") +
-        '<div class="gallery-dots" aria-hidden="false">' + dots + "</div>"
-      : "";
-
-    return (
-      '<div class="project-cover">' +
-      '<div class="cover-track">' + slides + "</div>" +
-      controls +
-      "</div>"
-    );
+  // Обложка для карточки в колоде: скриншот или сгенерированная заглушка
+  function coverFor(project, index) {
+    if (project.images && project.images.length) return project.images[0];
+    var num = String(index + 1).padStart(2, "0");
+    var svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="460" height="300" viewBox="0 0 460 300">' +
+      '<defs><pattern id="p" width="22" height="22" patternUnits="userSpaceOnUse">' +
+      '<circle cx="2" cy="2" r="1.6" fill="rgba(200,179,246,0.12)"/></pattern></defs>' +
+      '<rect width="460" height="300" fill="#14153a"/>' +
+      '<rect width="460" height="300" fill="url(#p)"/>' +
+      '<text x="24" y="282" font-family="monospace" font-size="96" font-weight="bold" ' +
+      'fill="none" stroke="#4a4499" stroke-width="2">' + num + "</text></svg>";
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
   }
 
-  // Листание внутри обложки: стрелки, точки, свайп (scroll-snap)
-  function wireCoverGallery(card, project) {
-    var track = card.querySelector(".cover-track");
-    if (!track) return;
+  var deckHolder = document.getElementById("projects-deck");
+  var spotBox = document.getElementById("project-spot");
+  var tabsBox = document.getElementById("projects-tabs");
+  var emptyBox = document.getElementById("projects-empty");
+  var deckApi = null;
+  var currentList = [];
 
-    var slides = track.querySelectorAll(".cover-slide").length;
-    var dots = Array.prototype.slice.call(card.querySelectorAll(".gallery-dot"));
-    var prev = card.querySelector(".g-arrow.prev");
-    var next = card.querySelector(".g-arrow.next");
+  // Панель под колодой: описание карточки, которая сейчас впереди
+  function renderSpot(project) {
+    if (!spotBox) return;
+    spotBox.innerHTML = "";
+    if (!project) return;
 
-    function currentIndex() {
-      return Math.round(track.scrollLeft / track.clientWidth);
+    var panel = document.createElement("article");
+    panel.className = "spot-card filter-in";
+
+    if (project.featured) {
+      var badge = document.createElement("span");
+      badge.className = "card-badge mono";
+      badge.textContent = "Свежая работа";
+      panel.appendChild(badge);
     }
 
-    function update() {
-      var i = currentIndex();
-      dots.forEach(function (dot, j) {
-        dot.classList.toggle("is-active", j === i);
+    var title = document.createElement("h3");
+    title.className = "spot-title";
+    title.textContent = project.title;
+    panel.appendChild(title);
+
+    var desc = document.createElement("p");
+    desc.className = "spot-desc";
+    desc.textContent = project.description || "";
+    panel.appendChild(desc);
+
+    if (project.tags && project.tags.length) {
+      var tags = document.createElement("ul");
+      tags.className = "project-tags";
+      project.tags.forEach(function (tag) {
+        var li = document.createElement("li");
+        li.textContent = tag;
+        tags.appendChild(li);
       });
-      if (prev) prev.disabled = i <= 0;
-      if (next) next.disabled = i >= slides - 1;
+      panel.appendChild(tags);
     }
 
-    function goTo(i) {
-      track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
-    }
-
-    track.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    if (prev) prev.addEventListener("click", function () { goTo(currentIndex() - 1); });
-    if (next) next.addEventListener("click", function () { goTo(currentIndex() + 1); });
-    dots.forEach(function (dot) {
-      dot.addEventListener("click", function () { goTo(Number(dot.dataset.goto)); });
-    });
-    update();
-
-    // Клик по скриншоту — открыть лайтбокс.
-    // Если человек свайпнул и «отпустил» на слайде — не считаем это кликом.
-    var downX = null;
-    track.addEventListener("pointerdown", function (e) {
-      downX = e.clientX;
-    });
-    track.addEventListener("click", function (e) {
-      var slide = e.target.closest(".cover-slide");
-      if (!slide) return;
-      if (downX !== null && Math.abs(e.clientX - downX) > 8) {
-        downX = null;
-        return;
-      }
-      downX = null;
-      lightbox.open(project, Number(slide.dataset.slideIndex));
-    });
-  }
-
-  function renderProject(project, index) {
-    var card = document.createElement("article");
-    card.className = "project-card reveal" + (project.featured ? " featured" : "");
-
-    var number = String(index + 1).padStart(2, "0");
-    var tags = (project.tags || [])
-      .map(function (tag) {
-        return "<li>" + escapeHtml(tag) + "</li>";
-      })
-      .join("");
-
-    var links = "";
+    var links = document.createElement("div");
+    links.className = "project-links";
     if (project.demo) {
-      links +=
-        '<a href="' + escapeAttr(project.demo) + '" target="_blank" rel="noopener">Демо &#8599;</a>';
+      var demo = document.createElement("a");
+      demo.href = project.demo;
+      demo.target = "_blank";
+      demo.rel = "noopener";
+      demo.textContent = "Демо ↗";
+      links.appendChild(demo);
     }
     if (project.source) {
-      links +=
-        '<a href="' + escapeAttr(project.source) + '" target="_blank" rel="noopener">Код &#8599;</a>';
+      var src = document.createElement("a");
+      src.href = project.source;
+      src.target = "_blank";
+      src.rel = "noopener";
+      src.textContent = "Код ↗";
+      links.appendChild(src);
     }
+    if (project.images && project.images.length) {
+      var gal = document.createElement("button");
+      gal.type = "button";
+      gal.className = "spot-gallery mono";
+      gal.textContent = "Скриншоты (" + project.images.length + ") ↗";
+      gal.addEventListener("click", function () {
+        lightbox.open(project, 0);
+      });
+      links.appendChild(gal);
+    }
+    if (links.childNodes.length) panel.appendChild(links);
 
-    card.innerHTML =
-      buildCover(project, number) +
-      '<div class="project-body">' +
-      (project.featured ? '<span class="card-badge mono">Свежая работа</span>' : "") +
-      '<h3 class="project-title">' + escapeHtml(project.title) + "</h3>" +
-      '<p class="project-desc">' + escapeHtml(project.description) + "</p>" +
-      '<ul class="project-tags">' + tags + "</ul>" +
-      (links ? '<div class="project-links">' + links + "</div>" : "") +
-      "</div>";
-
-    return card;
+    spotBox.appendChild(panel);
   }
 
-  /* ---------- Сборка списка проектов и вкладки-категории ---------- */
+  function showList(list, category) {
+    currentList = list;
+    if (deckApi) {
+      deckApi.destroy();
+      deckApi = null;
+    }
+    if (deckHolder) deckHolder.innerHTML = "";
 
-  var grid = document.getElementById("projects-grid");
-  var tabsBox = document.getElementById("projects-tabs");
+    if (!list.length) {
+      if (deckHolder) deckHolder.style.display = "none";
+      if (spotBox) spotBox.innerHTML = "";
+      if (emptyBox) {
+        emptyBox.hidden = false;
+        emptyBox.querySelector("p").textContent =
+          "В разделе «" + category + "» пока пусто — работы готовятся.";
+      }
+      return;
+    }
+    if (emptyBox) emptyBox.hidden = true;
+    if (deckHolder) deckHolder.style.display = "";
 
-  if (grid && typeof PROJECTS !== "undefined") {
-    var entries = []; // пары «карточка + проект» для фильтрации
-
-    PROJECTS.forEach(function (project, index) {
-      var card = renderProject(project, index);
-      grid.appendChild(card);
-      wireCoverGallery(card, project);
-      entries.push({ card: card, project: project });
+    var items = list.map(function (p, i) {
+      return { title: p.title, image: coverFor(p, i), alt: p.title };
     });
 
-    // Пустое состояние для категорий без работ
-    var emptyBox = document.createElement("div");
-    emptyBox.className = "projects-empty";
-    emptyBox.innerHTML =
-      '<span class="mono">скоро</span>' +
-      "<p>В этом разделе пока пусто — работы готовятся.</p>";
-    emptyBox.style.display = "none";
-    grid.parentNode.insertBefore(emptyBox, grid.nextSibling);
+    deckApi = window.CardSwap(deckHolder, {
+      items: items,
+      width: 460,
+      height: 340,
+      cardDistance: 55,
+      verticalDistance: 65,
+      depth: 80,
+      skewAmount: 6,
+      visibleCards: 4,
+      delay: 4200,
+      cardRadius: 16,
+      theme: "dark",
+      label: "Проекты",
+      onCardClick: function (i) {
+        var p = currentList[i];
+        if (!p) return;
+        if (p.images && p.images.length) lightbox.open(p, 0);
+        else if (p.demo) window.open(p.demo, "_blank", "noopener");
+      },
+      onChange: function (i) {
+        renderSpot(currentList[i]);
+      }
+    });
+    renderSpot(list[0]);
+  }
 
-    var applyFilter = function (category) {
-      var shown = 0;
-      entries.forEach(function (entry) {
-        var match =
-          category === "Все" || entry.project.category === category;
-        if (match) {
-          entry.card.style.display = "";
-          // перезапуск анимации появления
-          entry.card.classList.remove("filter-in");
-          entry.card.classList.add("is-visible"); // карточка уже в кадре — reveal не нужен
-        } else {
-          entry.card.style.display = "none";
-        }
-      });
-      // стаггер и запуск анимации вторым проходом после reflow
-      void grid.offsetWidth;
-      entries.forEach(function (entry) {
-        if (entry.card.style.display !== "none") {
-          entry.card.style.animationDelay = shown * 60 + "ms";
-          entry.card.classList.add("filter-in");
-          shown++;
-        }
-      });
-      emptyBox.style.display = shown === 0 ? "" : "none";
-      emptyBox.querySelector("p").textContent =
-        "В разделе «" + category + "» пока пусто — работы готовятся.";
-    };
-
+  if (deckHolder && typeof PROJECTS !== "undefined" && typeof window.CardSwap === "function") {
     if (tabsBox && typeof CATEGORIES !== "undefined") {
       var buttons = [];
       CATEGORIES.forEach(function (category, i) {
@@ -350,13 +293,21 @@
           });
           btn.classList.add("is-active");
           btn.setAttribute("aria-selected", "true");
-          applyFilter(category);
+          showList(
+            PROJECTS.filter(function (p) {
+              return category === "Все" || p.category === category;
+            }),
+            category
+          );
         });
         tabsBox.appendChild(btn);
         buttons.push(btn);
       });
     }
+
+    showList(PROJECTS.slice(), "Все");
   }
+
 
   /* ---------- Контакты ---------- */
 

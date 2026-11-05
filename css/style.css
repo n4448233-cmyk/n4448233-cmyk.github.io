@@ -1082,3 +1082,249 @@ body::after {
     transition: none;
   }
 }
+
+/* ---------- Колода проектов (CardSwap) ---------- */
+
+.projects-deck {
+  position: relative;
+  height: 600px;
+  margin-top: 6px;
+}
+
+@media (max-width: 760px) {
+  .projects-deck {
+    height: 430px;
+  }
+}
+
+/* Тема колоды под палитру сайта */
+.projects-deck .card-swap {
+  --swap-tile: linear-gradient(180deg, #3b2f92 0%, #2d1c7f 100%);
+  --swap-tile-edge: rgba(200, 179, 246, 0.18);
+  --swap-tile-highlight: rgba(239, 237, 252, 0.16);
+  --swap-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.8), 0 10px 24px -12px rgba(0, 0, 0, 0.55);
+  --swap-media-edge: rgba(239, 237, 252, 0.1);
+  --swap-ink: #efedfc;
+  --swap-badge: rgba(239, 237, 252, 0.12);
+  --swap-shade: #06071a;
+  --swap-radius: 14px;
+}
+
+.projects-deck .card-swap:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 4px;
+}
+
+.card-swap-title {
+  font-family: var(--font-main);
+  font-size: 15px;
+}
+
+/* Панель описания карточки, которая впереди */
+.project-spot {
+  margin-top: 30px;
+}
+
+.spot-card {
+  max-width: 780px;
+  padding: 26px 30px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.spot-title {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+}
+
+.spot-desc {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.spot-gallery {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0 0 2px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.spot-gallery:hover {
+  color: var(--accent-2);
+  border-color: var(--accent-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot-card.filter-in {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- Базовые стили CardSwap ---------- */
+
+.card-swap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card-swap-sizer {
+  max-height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.card-swap-sizer > span {
+  display: block;
+  width: 100%;
+  max-width: var(--swap-stage-w);
+  aspect-ratio: var(--swap-ratio);
+}
+
+.card-swap-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--swap-stage-w);
+  height: var(--swap-stage-h);
+  perspective: 900px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.card-swap-slot {
+  position: absolute;
+  top: var(--swap-oy);
+  left: var(--swap-ox);
+  width: var(--swap-w);
+  height: var(--swap-h);
+  margin: calc(var(--swap-h) / -2) 0 0 calc(var(--swap-w) / -2);
+  border-radius: var(--swap-radius);
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: var(--swap-shadow);
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-swap:focus-visible .card-swap-slot[data-front] {
+  outline: 2px solid var(--swap-ink);
+  outline-offset: 3px;
+}
+
+.card-swap-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: var(--swap-shade);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card-swap-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: inherit;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--swap-tile);
+  color: var(--swap-ink);
+}
+
+.card-swap-card-rim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--swap-tile-edge),
+    inset 0 1px 0 var(--swap-tile-highlight);
+  pointer-events: none;
+}
+
+.card-swap-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.card-swap-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 30px;
+  padding: 0 6px;
+}
+
+.card-swap-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--swap-badge);
+}
+
+.card-swap-title {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-swap-media {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: max(0px, calc(var(--swap-radius) - 6px));
+  background: var(--swap-badge);
+}
+
+.card-swap-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.card-swap-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--swap-media-edge);
+  pointer-events: none;
+}
