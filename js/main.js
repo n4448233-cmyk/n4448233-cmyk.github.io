@@ -462,7 +462,8 @@
         atmosphere: 0.95,
         intensity: 1.2,
         saturation: 0.75,
-        cursorShadow: false
+        cursorShadow: false,
+        clickPulse: false
       });
     } catch (e) {
       /* без лучей секция остаётся с обычным фоном */
