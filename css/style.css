@@ -1331,6 +1331,13 @@ body::after {
 
 /* ---------- LightRays в зоне проектов ---------- */
 
+/* Секция должна быть точкой отсчёта для absolutely-позиционных лучей,
+   иначе они привяжутся к странице и вылезут в другие зоны */
+#projects {
+  position: relative;
+  overflow: hidden;
+}
+
 .projects-rays {
   position: absolute;
   inset: 0;
