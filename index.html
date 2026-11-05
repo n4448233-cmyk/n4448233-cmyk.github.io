@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sexsowa — портфолио</title>
-  <meta name="description" content="Портфолио Sexsowa: проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
+  <title>Sexsowa PFT — портфолио</title>
+  <meta name="description" content="Портфолио Sexsowa PFT: проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Open Graph: так ссылка красиво выглядит, когда кидаешь её в телеграм -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Sexsowa — портфолио">
+  <meta property="og:title" content="Sexsowa PFT — портфолио">
   <meta property="og:description" content="Проекты, которыми я занимаюсь — сайты, инструменты и всё, что получилось собрать.">
   <meta property="og:locale" content="ru_RU">
 
@@ -38,10 +38,9 @@
 
     <!-- ===== Приветствие ===== -->
     <section class="hero">
-      <!-- Фото: "Macro laptop coding" с Wikimedia Commons (оригинал Unsplash) -->
-      <div class="hero-bg" aria-hidden="true">
-        <img src="img/hero.jpg" alt="">
-      </div>
+      <!-- Фон: GhostFibers (WebGL-ленты) вместо фото -->
+      <div class="hero-fibers" aria-hidden="true"></div>
+      <div class="hero-scrim" aria-hidden="true"></div>
       <div class="container hero-grid">
         <div class="hero-main">
           <p class="kicker mono">Портфолио · 2026</p>
@@ -50,7 +49,7 @@
             которые <em>просто работают</em>.
           </h1>
           <p class="hero-text">
-            Привет! Я — <span data-bind="name">Sexsowa</span>. Здесь лежат проекты,
+            Привет! Я — <span data-bind="name">Sexsowa PFT</span>. Здесь лежат проекты,
             которые я сделал: от маленьких утилит для себя до полноценных сайтов.
             Каждый — с историей о том, зачем он вообще появился.
           </p>
@@ -60,7 +59,7 @@
           </div>
         </div>
         <div class="hero-art">
-          <img src="img/sig.gif" alt="Анимированная сигнатура Sexsowa" width="480" height="574">
+          <img src="img/sig.gif" alt="Анимированная сигнатура Sexsowa PFT" width="480" height="574">
         </div>
       </div>
     </section>
@@ -168,6 +167,7 @@
   </footer>
 
   <script src="js/data.js"></script>
+  <script src="js/ghost-fibers.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

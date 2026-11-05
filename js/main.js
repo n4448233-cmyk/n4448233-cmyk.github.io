@@ -450,6 +450,48 @@
     year.textContent = new Date().getFullYear();
   }
 
+  /* ---------- Фон приветствия: GhostFibers (WebGL-ленты) ---------- */
+
+  var heroFibers = document.querySelector(".hero-fibers");
+  if (heroFibers && typeof window.GhostFibers === "function") {
+    try {
+      window.GhostFibers(heroFibers, {
+        glowColor: "#8411d7",
+        lineColor: "#f0f0f0",
+        secondaryColor: "#7a17b7",
+        layers: 3,
+        twist: 0.45,
+        threads: 44,
+        fiberStyle: "dots",
+        depthOfField: 0.75,
+        hoverEffect: "focus",
+        intro: true,
+        mouseInteraction: true,
+        waves: 0.9,
+        volume: 0.65,
+        spread: 1.4,
+        scale: 0.7,
+        rotation: 17,
+        perspective: 0.64,
+        density: 1.3,
+        thickness: 1.2,
+        foldGlow: 1.05,
+        speed: 0.2,
+        flow: 0.05,
+        rollSpeed: -0.01,
+        focusDepth: 0.05,
+        particles: 0.85,
+        glow: 0.5,
+        brightness: 0.8,
+        vignette: 0.45,
+        grain: 0.13,
+        mouseStrength: 1.05
+      });
+    } catch (e) {
+      /* без анимации страница остаётся с градиентной подложкой */
+    }
+  }
+
   /* ---------- Появление карточек при прокрутке ---------- */
 
   if ("IntersectionObserver" in window) {

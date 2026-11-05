@@ -4,12 +4,15 @@
    ============================================================ */
 
 :root {
-  --bg: #131312;          /* фон страницы */
-  --bg-soft: #1b1b19;     /* фон карточек и блоков */
-  --ink: #ebe9e4;         /* основной текст */
-  --muted: #a3a09a;       /* второстепенный текст */
-  --line: #2b2b28;        /* границы и линейки */
-  --accent: #ff5d3b;      /* акцентный цвет */
+  /* Палитра «Sexsowa PFT» — индиго-лавандовая гамма */
+  --bg: #0d0e20;          /* Chinese Black — фон страницы */
+  --bg-soft: #2d1c7f;     /* Persian Indigo — карточки и блоки */
+  --bg-deep: #06071a;     /* почти чёрный индиго — подложки лайтбокса */
+  --ink: #efedfc;         /* основной текст */
+  --muted: #b0a9e5;       /* Max Blue Purple — второстепенный текст */
+  --line: #3d3484;        /* границы и линейки */
+  --accent: #7546e8;      /* Majorelle Blue — заливки, кнопки */
+  --accent-2: #c8b3f6;    /* Vodka — ховеры и мелкие акценты текстом */
 
   --font-main: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
@@ -96,7 +99,7 @@ h1, h2, h3 {
   top: 0;
   z-index: 50;
   height: var(--header-h);
-  background: rgba(19, 19, 18, 0.85);
+  background: rgba(13, 14, 32, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -152,29 +155,36 @@ h1, h2, h3 {
   z-index: 1;
 }
 
-/* фоновое фото: тёмный редактор с кодом, приглушён градиентом */
-.hero-bg {
+/* Фоновая анимация GhostFibers (WebGL) вместо фото */
+.hero-fibers {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
+  /* запасной вид, пока грузится WebGL: мягкое индиго-свечение */
+  background:
+    radial-gradient(120% 90% at 72% 18%, rgba(117, 70, 232, 0.20), transparent 62%),
+    radial-gradient(90% 80% at 15% 85%, rgba(45, 28, 127, 0.35), transparent 60%),
+    var(--bg);
 }
 
-.hero-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 70% center;
-  filter: grayscale(65%) contrast(1.05) brightness(0.55);
-  opacity: 0.5;
-}
-
-.hero-bg::after {
-  content: "";
+.ghost-fibers-canvas {
   position: absolute;
   inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* затемнение под текст слева и снизу, чтобы шрифт читался поверх волокон */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background:
-    linear-gradient(90deg, var(--bg) 6%, rgba(19, 19, 18, 0.78) 46%, rgba(19, 19, 18, 0.22) 100%),
-    linear-gradient(0deg, var(--bg) 0%, rgba(19, 19, 18, 0) 45%);
+    linear-gradient(90deg, rgba(13, 14, 32, 0.82) 4%, rgba(13, 14, 32, 0.35) 52%, rgba(13, 14, 32, 0.05) 100%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(13, 14, 32, 0) 42%);
 }
 
 /* Сетка приветствия: текст слева, анимационная сигнатура справа */
@@ -260,7 +270,7 @@ h1, h2, h3 {
 
 .btn-solid:hover {
   background: var(--accent);
-  color: #131312;
+  color: #0d0e20;
 }
 
 .btn-ghost {
@@ -367,11 +377,11 @@ h1, h2, h3 {
 
 .tab-btn:hover {
   color: var(--ink);
-  border-color: #4a4a45;
+  border-color: #5a4fc0;
 }
 
 .tab-btn.is-active {
-  color: #131312;
+  color: #0d0e20;
   background: var(--accent);
   border-color: var(--accent);
 }
@@ -416,7 +426,7 @@ h1, h2, h3 {
 }
 
 .project-card:hover {
-  border-color: #4a4a45;
+  border-color: #5a4fc0;
   transform: translateY(-3px);
 }
 
@@ -428,7 +438,7 @@ h1, h2, h3 {
   position: relative;
   aspect-ratio: 16 / 8;
   background-color: var(--bg);
-  background-image: radial-gradient(rgba(235, 233, 228, 0.10) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(239, 237, 252, 0.10) 1px, transparent 1px);
   background-size: 22px 22px;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
@@ -453,7 +463,7 @@ h1, h2, h3 {
   font-size: 4.5rem;
   font-weight: 500;
   color: transparent;
-  -webkit-text-stroke: 1px #3a3a36;
+  -webkit-text-stroke: 1px #4a4499;
   line-height: 1;
   user-select: none;
 }
@@ -480,7 +490,7 @@ h1, h2, h3 {
 .card-badge {
   width: max-content;
   padding: 5px 12px;
-  border: 1px solid rgba(255, 93, 59, 0.55);
+  border: 1px solid rgba(200, 179, 246, 0.55);
   color: var(--accent);
   border-radius: 999px;
   font-size: 0.7rem;
@@ -768,13 +778,13 @@ body::after {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2e2e2a;
+  background: #33315f;
   border-radius: 999px;
   border: 2px solid var(--bg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3c3c37;
+  background: #4a4595;
 }
 
 /* ---------- Адаптив ---------- */
@@ -796,11 +806,6 @@ body::after {
 @media (max-width: 760px) {
   .hero {
     padding: 70px 0 60px;
-  }
-
-  .hero-bg img {
-    opacity: 0.32;
-    filter: grayscale(80%) contrast(1.05) brightness(0.5);
   }
 
   .hero-grid {
@@ -876,7 +881,7 @@ body::after {
   height: 42px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: rgba(19, 19, 18, 0.75);
+  background: rgba(13, 14, 32, 0.75);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: var(--ink);
@@ -937,8 +942,8 @@ body::after {
   height: 9px;
   padding: 0;
   border-radius: 50%;
-  border: 1px solid rgba(19, 19, 18, 0.6);
-  background: rgba(235, 233, 228, 0.35);
+  border: 1px solid rgba(13, 14, 32, 0.6);
+  background: rgba(239, 237, 252, 0.35);
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -959,7 +964,7 @@ body::after {
   justify-content: center;
   gap: 18px;
   padding: 24px;
-  background: rgba(12, 12, 11, 0.92);
+  background: rgba(6, 7, 20, 0.92);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -1016,7 +1021,7 @@ body::after {
   height: 44px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: rgba(19, 19, 18, 0.75);
+  background: rgba(13, 14, 32, 0.75);
   color: var(--ink);
   display: flex;
   align-items: center;
